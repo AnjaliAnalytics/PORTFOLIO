@@ -376,7 +376,7 @@ const Portfolio = () => {
           <div className="lg:col-span-6 flex justify-center my-4 lg:my-0">
             <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border-2 border-cyan-500/40 shadow-2xl shadow-cyan-500/30 hover:scale-105 transition duration-500">
               <img 
-                src="/photo.png" 
+                src="./photo.png" 
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"; }}
                 alt="Anjali Yadav Profile" 
                 className="w-full h-full object-cover object-top filter brightness-95 contrast-105"
