@@ -4,7 +4,7 @@ import {
   FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaAward, FaExternalLinkAlt, 
   FaCode, FaGraduationCap, FaDatabase, FaChartLine, FaCheckCircle, 
   FaTimes, FaPaperPlane, FaBriefcase, FaTimesCircle, FaChevronRight,
-  FaMapMarkedAlt, FaCogs, FaChartPie, FaPaperPlane as FaSend, FaUser, FaBars
+  FaMapMarkedAlt, FaCogs, FaChartPie, FaPaperPlane as FaSend, FaUser, FaBars, FaFileDownload
 } from 'react-icons/fa';
 
 // Web Audio API Synthesizer Click Sound
@@ -190,6 +190,8 @@ const Portfolio = () => {
         botResponse = "Explore all of Anjali's open-source analytics code repositories on GitHub: https://github.com/AnjaliAnalytics\n\nIf you want to see her projects with more clarity, visit GitHub!";
       } else if (query.includes('contact') || query.includes('email') || query.includes('phone') || query.includes('reach') || query.includes('gmail')) {
         botResponse = "You can contact Anjali directly:\n• Email: anjaliyadavpersonal2001@gmail.com\n• Phone: +91-9845483651\n• LinkedIn: https://linkedin.com/in/anjali-yadav-dev\n• GitHub: https://github.com/AnjaliAnalytics";
+      } else if (query.includes('resume') || query.includes('cv')) {
+        botResponse = "You can view and download Anjali's official resume directly from the top navigation bar or using this link: ./resume.pdf";
       } else if (query.includes('experience') || query.includes('iqvia') || query.includes('background') || query.includes('job') || query.includes('role')) {
         botResponse = "Professional Background:\n• Senior Production Associate at IQVIA (Jul 2025 – Mar 2026) in Bangalore, India.\n• Specialization: Operational data analysis, MIS reporting automation using Advanced Excel VBA, Power Query, and reconciliation workflows.\n• Academic: MCA at IIT Patna (8.4 CGPA) & BCA at Kristu Jayanti College (7.9 CGPA).";
       } else if (query.includes('skill') || query.includes('tool') || query.includes('python') || query.includes('sql') || query.includes('power bi')) {
@@ -299,8 +301,8 @@ const Portfolio = () => {
           ANJALI YADAV
         </a>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex gap-8 text-lg font-bold text-slate-300">
+        {/* Desktop Links & Resume Button */}
+        <div className="hidden md:flex items-center gap-8 text-lg font-bold text-slate-300">
           {[
             { id: 'about', label: 'About' },
             { id: 'experience', label: 'Experience' },
@@ -322,6 +324,17 @@ const Portfolio = () => {
               {item.label}
             </a>
           ))}
+
+          {/* Desktop Resume Button */}
+          <a 
+            href="./resume.pdf" 
+            target="_blank" 
+            rel="noreferrer"
+            onClick={playClickSound}
+            className="px-5 py-2.5 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-sm rounded-xl hover:scale-105 transition shadow-lg shadow-cyan-500/20 flex items-center gap-2"
+          >
+            <FaFileDownload /> Resume
+          </a>
         </div>
 
         {/* Mobile Hamburger Menu Button */}
@@ -354,6 +367,17 @@ const Portfolio = () => {
                 {item.label}
               </a>
             ))}
+
+            {/* Mobile Resume Button */}
+            <a 
+              href="./resume.pdf" 
+              target="_blank" 
+              rel="noreferrer"
+              onClick={() => { playClickSound(); setIsMobileMenuOpen(false); }}
+              className="mt-2 py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-base rounded-xl shadow-lg flex items-center justify-center gap-2"
+            >
+              <FaFileDownload /> Download Resume
+            </a>
           </div>
         )}
       </nav>
@@ -825,7 +849,7 @@ const Portfolio = () => {
 
             {/* Chips */}
             <div className="p-2 md:p-3 bg-slate-950 border-t border-slate-800/80 flex gap-2 overflow-x-auto text-[11px] md:text-xs">
-              {['Experience', 'Education', 'Skills', 'Contact', 'Projects'].map((chip, cIdx) => (
+              {['Experience', 'Education', 'Skills', 'Contact', 'Projects', 'Resume'].map((chip, cIdx) => (
                 <button 
                   key={cIdx} 
                   onClick={() => handleSendMessage(`Tell me about her ${chip}`)}
