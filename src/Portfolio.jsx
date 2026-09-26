@@ -3,8 +3,8 @@ import * as THREE from 'three';
 import { 
   FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaAward, FaExternalLinkAlt, 
   FaCode, FaGraduationCap, FaDatabase, FaChartLine, FaCheckCircle, 
-  FaTimes, FaPaperPlane, FaBriefcase, FaTimesCircle, FaChevronRight,
-  FaMapMarkedAlt, FaCogs, FaChartPie, FaPaperPlane as FaSend, FaUser, FaBars, FaFileDownload
+  FaTimes, FaBriefcase, FaTimesCircle, FaChevronRight, FaCogs, FaChartPie, 
+  FaPaperPlane as FaSend, FaBars, FaFileDownload
 } from 'react-icons/fa';
 
 // Web Audio API Synthesizer Click Sound
@@ -14,14 +14,14 @@ const playClickSound = () => {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
-    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.04);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.04);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.05);
+    osc.stop(audioCtx.currentTime + 0.04);
   } catch (e) {}
 };
 
@@ -38,13 +38,13 @@ const Portfolio = () => {
   const [userInput, setUserInput] = useState('');
   const chatEndRef = useRef(null);
 
-  // Form State & Validation State
+  // Form State & Validation
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [formErrors, setFormErrors] = useState({ email: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // Scroll Tracking for Active Navbar Link
+  // Scroll Tracking
   useEffect(() => {
     const handleScroll = () => {
       const sections = ['about', 'experience', 'skills', 'projects', 'education', 'contact'];
@@ -71,7 +71,7 @@ const Portfolio = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages, isChatOpen]);
 
-  // Three.js 3D Warm Background Engine
+  // Three.js Minimal Ambient Particle Background
   useEffect(() => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -81,7 +81,7 @@ const Portfolio = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    const particlesCount = 700;
+    const particlesCount = 500;
     const posArray = new Float32Array(particlesCount * 3);
     for(let i = 0; i < particlesCount * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 20;
@@ -90,40 +90,28 @@ const Portfolio = () => {
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particleMat = new THREE.PointsMaterial({
-      size: 0.04,
-      color: 0xD4A373,
+      size: 0.035,
+      color: 0x0071E3,
       transparent: true,
-      opacity: 0.6
+      opacity: 0.25
     });
     const particlesMesh = new THREE.Points(particleGeo, particleMat);
     scene.add(particlesMesh);
-
-    const barsGroup = new THREE.Group();
-    const barMaterial = new THREE.MeshBasicMaterial({ color: 0xCCD5AE, wireframe: true, transparent: true, opacity: 0.4 });
-    for (let i = 0; i < 10; i++) {
-      const height = Math.random() * 2.5 + 0.5;
-      const geometry = new THREE.BoxGeometry(0.4, height, 0.4);
-      const bar = new THREE.Mesh(geometry, barMaterial);
-      bar.position.set((Math.random() - 0.5) * 14, (Math.random() - 0.5) * 10, (Math.random() - 0.5) * 8);
-      barsGroup.add(bar);
-    }
-    scene.add(barsGroup);
 
     camera.position.z = 6;
 
     let mouseX = 0;
     let mouseY = 0;
     const handleMouseMove = (e) => {
-      mouseX = (e.clientX / window.innerWidth - 0.5) * 0.5;
-      mouseY = (e.clientY / window.innerHeight - 0.5) * 0.5;
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 0.3;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 0.3;
     };
     window.addEventListener('mousemove', handleMouseMove);
 
     const animate = () => {
       requestAnimationFrame(animate);
-      particlesMesh.rotation.y += 0.001;
-      particlesMesh.rotation.x += 0.0005;
-      barsGroup.rotation.y += 0.0015;
+      particlesMesh.rotation.y += 0.0008;
+      particlesMesh.rotation.x += 0.0004;
       camera.position.x += (mouseX - camera.position.x) * 0.05;
       camera.position.y += (-mouseY - camera.position.y) * 0.05;
       renderer.render(scene, camera);
@@ -144,7 +132,7 @@ const Portfolio = () => {
     };
   }, []);
 
-  // Detailed Intelligent AI Agent Logic
+  // AI Agent Logic
   const handleSendMessage = (textToSend) => {
     const rawInput = textToSend || userInput;
     const query = rawInput.trim().toLowerCase();
@@ -157,7 +145,6 @@ const Portfolio = () => {
 
     setTimeout(() => {
       let botResponse = "";
-
       const currentHour = new Date().getHours();
       let timeGreeting = "good morning";
       if (currentHour >= 12 && currentHour < 17) {
@@ -170,34 +157,32 @@ const Portfolio = () => {
         botResponse = `Hii, I am Tia! ${timeGreeting.charAt(0).toUpperCase() + timeGreeting.slice(1)}! How can I assist you with Anjali's portfolio today?`;
       } else if (query === 'bye' || query === 'goodbye' || query.includes('bye') || query.includes('see you')) {
         botResponse = "Bye, Visit again!";
-      } 
-      else if (query.includes('churn') || query.includes('customer intelligence')) {
-        botResponse = "Project 01: AI Customer Intelligence & Churn Prediction.\n• Tools Used: Python (Pandas, Scikit-Learn), SQL, Power BI, GenAI.\n• Details: Analyzed 20,000+ customer records to identify churn drivers and built predictive ML models with executive Power BI dashboards.\n• GitHub: https://github.com/AnjaliAnalytics/customer-churn-intelligence\n\nIf you want to see the project with more clarity and review the code, visit GitHub!";
+      } else if (query.includes('churn') || query.includes('customer intelligence')) {
+        botResponse = "Project 01: AI Customer Intelligence & Churn Prediction.\n• Tools Used: Python (Pandas, Scikit-Learn), SQL, Power BI, GenAI.\n• Details: Analyzed 20,000+ customer records to identify churn drivers and built predictive ML models with executive Power BI dashboards.\n• GitHub: https://github.com/AnjaliAnalytics/customer-churn-intelligence";
       } else if (query.includes('demand') || query.includes('forecasting') || query.includes('e-commerce demand')) {
-        botResponse = "Project 02: E-Commerce Demand Forecasting.\n• Tools Used: Python, SQL, Time Series Analysis, Machine Learning, Power BI.\n• Details: Built automated time-series forecasting models to optimize safety stock inventory levels and reduce stockouts across multi-category e-commerce catalog items.\n• GitHub: https://github.com/AnjaliAnalytics/ecommerce-demand-forecasting\n\nIf you want to see the project with more clarity and review the code, visit GitHub!";
+        botResponse = "Project 02: E-Commerce Demand Forecasting.\n• Tools Used: Python, SQL, Time Series Analysis, Machine Learning, Power BI.\n• Details: Built automated time-series forecasting models to optimize safety stock inventory levels and reduce stockouts across multi-category e-commerce catalog items.\n• GitHub: https://github.com/AnjaliAnalytics/ecommerce-demand-forecasting";
       } else if (query.includes('copilot') || query.includes('ai analytics copilot') || query.includes('ollama')) {
-        botResponse = "Project 03: AI Analytics Copilot.\n• Tools Used: n8n, Ollama, NocoDB, QuickChart, Docker, Python, SQL.\n• Details: Created an AI-powered conversational analytics agent that translates natural language questions into executable SQL queries and dynamically generates visual chart URLs.\n• GitHub: https://github.com/AnjaliAnalytics/ai-analytics-copilot\n\nIf you want to see the project with more clarity and review the code, visit GitHub!";
+        botResponse = "Project 03: AI Analytics Copilot.\n• Tools Used: n8n, Ollama, NocoDB, QuickChart, Docker, Python, SQL.\n• Details: Created an AI-powered conversational analytics agent that translates natural language questions into executable SQL queries and dynamically generates visual chart URLs.\n• GitHub: https://github.com/AnjaliAnalytics/ai-analytics-copilot";
       } else if (query.includes('ga4') || query.includes('marketing') || query.includes('google analytics')) {
-        botResponse = "Project 04: GA4 Product & Marketing Analytics Platform.\n• Tools Used: BigQuery, Event Analytics, Looker Studio, A/B Testing, GenAI.\n• Details: Processed 140K+ event logs in BigQuery to evaluate user funnels, cohort retention heatmaps, and Z-test statistical significance for digital marketing campaigns.\n• GitHub: https://github.com/AnjaliAnalytics/product-marketing-analytics\n\nIf you want to see the project with more clarity and review the code, visit GitHub!";
+        botResponse = "Project 04: GA4 Product & Marketing Analytics Platform.\n• Tools Used: BigQuery, Event Analytics, Looker Studio, A/B Testing, GenAI.\n• Details: Processed 140K+ event logs in BigQuery to evaluate user funnels, cohort retention heatmaps, and Z-test statistical significance for digital marketing campaigns.\n• GitHub: https://github.com/AnjaliAnalytics/product-marketing-analytics";
       } else if (query.includes('project') || query.includes('work') || query.includes('portfolio projects') || query.includes('elaborate')) {
-        botResponse = "Anjali has built 6 primary data analytics projects:\n1. AI Customer Intelligence & Churn (Python, SQL, Power BI)\n2. E-Commerce Demand Forecasting (Python, ML, Time Series)\n3. AI Analytics Copilot (n8n, Ollama, Docker, SQL)\n4. GA4 Product & Marketing Platform (BigQuery, Looker Studio)\n5. Global E-Commerce Sales Analytics (SQL, Excel, Power BI)\n6. Enterprise Data Quality Platform (SQL, Python, Power Query)\n\nIf you want to see any project with more clarity and review the code, visit her GitHub repository: https://github.com/AnjaliAnalytics";
-      } 
-      else if (query.includes('hackerrank') || query.includes('badge') || query.includes('gold')) {
-        botResponse = "Anjali holds a 5-Star Gold Badge in SQL & Python on HackerRank. You can view her verified public profile here: https://www.hackerrank.com/profile/anjaliyadavpers1";
+        botResponse = "Anjali has built 6 primary data analytics projects:\n1. AI Customer Intelligence & Churn (Python, SQL, Power BI)\n2. E-Commerce Demand Forecasting (Python, ML, Time Series)\n3. AI Analytics Copilot (n8n, Ollama, Docker, SQL)\n4. GA4 Product & Marketing Platform (BigQuery, Looker Studio)\n5. Global E-Commerce Sales Analytics (SQL, Excel, Power BI)\n6. Enterprise Data Quality Platform (SQL, Python, Power Query)\n\nExplore her GitHub repository: https://github.com/AnjaliAnalytics";
+      } else if (query.includes('hackerrank') || query.includes('badge') || query.includes('gold')) {
+        botResponse = "Anjali holds a 5-Star Gold Badge in SQL & Python on HackerRank: https://www.hackerrank.com/profile/anjaliyadavpers1";
       } else if (query.includes('linkedin')) {
         botResponse = "Connect with Anjali on LinkedIn: https://linkedin.com/in/anjali-yadav-dev";
       } else if (query.includes('github') || query.includes('git')) {
-        botResponse = "Explore all of Anjali's open-source analytics code repositories on GitHub: https://github.com/AnjaliAnalytics\n\nIf you want to see her projects with more clarity, visit GitHub!";
+        botResponse = "Explore all of Anjali's open-source analytics code repositories on GitHub: https://github.com/AnjaliAnalytics";
       } else if (query.includes('contact') || query.includes('email') || query.includes('phone') || query.includes('reach') || query.includes('gmail')) {
-        botResponse = "You can contact Anjali directly:\n• Email: anjaliyadavpersonal2001@gmail.com\n• Phone: +91-9845483651\n• LinkedIn: https://linkedin.com/in/anjali-yadav-dev\n• GitHub: https://github.com/AnjaliAnalytics";
+        botResponse = "Contact Anjali:\n• Email: anjaliyadavpersonal2001@gmail.com\n• Phone: +91-9845483651\n• LinkedIn: https://linkedin.com/in/anjali-yadav-dev\n• GitHub: https://github.com/AnjaliAnalytics";
       } else if (query.includes('resume') || query.includes('cv')) {
-        botResponse = "You can view and download Anjali's official resume directly from the top navigation bar or using this link: ./resume.pdf";
+        botResponse = "You can view and download Anjali's official resume using this link: ./resume.pdf";
       } else if (query.includes('experience') || query.includes('iqvia') || query.includes('background') || query.includes('job') || query.includes('role')) {
         botResponse = "Professional Background:\n• Senior Production Associate at IQVIA (Jul 2025 – Mar 2026) in Bangalore, India.\n• Specialization: Operational data analysis, MIS reporting automation using Advanced Excel VBA, Power Query, and reconciliation workflows.\n• Academic: MCA at IIT Patna (8.4 CGPA) & BCA at Kristu Jayanti College (7.9 CGPA).";
       } else if (query.includes('skill') || query.includes('tool') || query.includes('python') || query.includes('sql') || query.includes('power bi')) {
         botResponse = "Core Technical Tools & Stack:\n• Languages & Databases: Python (Pandas, NumPy, Scikit-learn), SQL (BigQuery, MySQL).\n• Visualization & BI: Power BI (DAX), Looker Studio, Tableau, Advanced Excel & VBA.\n• Frameworks & Ecosystems: Power Query ETL, Git, Docker, Local LLM Workflows.";
       } else {
-        botResponse = "Anjali is a Data Analyst skilled in Python, BigQuery SQL, Power BI, and MIS automation. You can reach her at anjaliyadavpersonal2001@gmail.com or explore her GitHub: https://github.com/AnjaliAnalytics";
+        botResponse = "Anjali is a Data Analyst skilled in Python, BigQuery SQL, Power BI, and MIS automation. Contact: anjaliyadavpersonal2001@gmail.com or GitHub: https://github.com/AnjaliAnalytics";
       }
 
       setChatMessages(prev => [...prev, { sender: 'tia', text: botResponse }]);
@@ -221,7 +206,6 @@ const Portfolio = () => {
     setActiveModal(data);
   };
 
-  // Form Validation & Background Email Transmission
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     playClickSound();
@@ -242,7 +226,6 @@ const Portfolio = () => {
     }
 
     setFormErrors(errors);
-
     if (!isValid) return;
 
     setIsSubmitting(true);
@@ -280,29 +263,29 @@ const Portfolio = () => {
   };
 
   const mapNodes = [
-    { id: 1, name: "Node 01: Multi-Source Data Ingestion", desc: "Ingesting healthcare and e-commerce event streams via BigQuery SQL and Python data pipelines.", icon: <FaDatabase /> },
-    { id: 2, name: "Node 02: Automated ETL & Processing", desc: "Executing custom VBA Macros and Power Query routines to automate transformation tasks.", icon: <FaCogs /> },
-    { id: 3, name: "Node 03: Data Quality & Reconciliation", desc: "Rigorous auditing, duplicate elimination, and trend anomaly profiling.", icon: <FaCheckCircle /> },
-    { id: 4, name: "Node 04: Executive Analytics & Dashboards", desc: "Delivering DAX-powered Power BI dashboards, Looker Studio reports, and GenAI insights.", icon: <FaChartPie /> }
+    { id: 1, name: "Node 01: Multi-Source Ingestion", desc: "Ingesting event streams via BigQuery SQL & Python pipelines.", icon: <FaDatabase /> },
+    { id: 2, name: "Node 02: Automated ETL", desc: "Executing VBA Macros and Power Query routines for automated processing.", icon: <FaCogs /> },
+    { id: 3, name: "Node 03: Data Quality", desc: "Rigorous auditing, duplicate elimination, and trend anomaly profiling.", icon: <FaCheckCircle /> },
+    { id: 4, name: "Node 04: Executive Analytics", desc: "DAX-powered Power BI dashboards, Looker Studio reports, & GenAI insights.", icon: <FaChartPie /> }
   ];
 
   return (
-    <div className="bg-[#FEFAE0] text-[#3D3228] min-h-screen font-sans relative overflow-x-hidden selection:bg-[#D4A373] selection:text-white text-base md:text-lg">
-      {/* 3D Canvas */}
-      <div ref={mountRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-60" />
+    <div className="bg-[#F5F5F7] text-[#1D1D1F] min-h-screen font-sans relative overflow-x-hidden selection:bg-[#0071E3] selection:text-white text-base md:text-lg tracking-tight">
+      {/* 3D Background */}
+      <div ref={mountRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40" />
 
-      {/* Top Navigation */}
-      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#FEFAE0]/90 border-b border-[#E9EDC9] px-4 md:px-8 py-4 md:py-5 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2 shadow-sm">
+      {/* Apple-Style Navigation Bar */}
+      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#F5F5F7]/80 border-b border-[#E5E5EA] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2 shadow-xs">
         <a 
           href="#about" 
           onClick={playClickSound}
-          className="text-2xl md:text-3xl font-black tracking-wider text-[#D4A373] hover:scale-105 transition"
+          className="text-xl md:text-2xl font-semibold tracking-tight text-[#1D1D1F] hover:opacity-80 transition"
         >
-          ANJALI YADAV
+          Anjali Yadav
         </a>
 
-        {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 text-lg font-bold text-[#5B5042]">
+        {/* Desktop Navigation Links */}
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#86868B]">
           {[
             { id: 'about', label: 'About' },
             { id: 'experience', label: 'Experience' },
@@ -315,39 +298,39 @@ const Portfolio = () => {
               key={item.id}
               href={`#${item.id}`} 
               onClick={playClickSound} 
-              className={`transition pb-1 ${
+              className={`transition ${
                 activeSection === item.id 
-                  ? 'text-[#D4A373] border-b-2 border-[#D4A373] font-extrabold scale-105' 
-                  : 'hover:text-[#D4A373]'
+                  ? 'text-[#1D1D1F] font-semibold' 
+                  : 'hover:text-[#1D1D1F]'
               }`}
             >
               {item.label}
             </a>
           ))}
 
-          {/* Resume Button */}
+          {/* Apple Pill Resume Button */}
           <a 
             href="./resume.pdf" 
             target="_blank" 
             rel="noreferrer"
             onClick={playClickSound}
-            className="px-5 py-2.5 bg-[#D4A373] text-white font-black text-sm rounded-xl hover:bg-[#c29263] transition shadow-md flex items-center gap-2"
+            className="px-4 py-1.5 bg-[#0071E3] text-white font-medium text-xs rounded-full hover:bg-[#0077ED] transition shadow-xs flex items-center gap-2"
           >
             <FaFileDownload /> Resume
           </a>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Mobile Menu Button */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="md:hidden text-[#D4A373] text-2xl p-2 focus:outline-none"
+          className="md:hidden text-[#1D1D1F] text-xl p-2 focus:outline-none"
         >
           {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* Mobile Menu */}
+        {/* Mobile Dropdown Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-[#FAEDCD] border-b border-[#E9EDC9] p-6 flex flex-col gap-4 text-center md:hidden shadow-xl">
+          <div className="absolute top-full left-0 w-full bg-[#F5F5F7] border-b border-[#E5E5EA] p-6 flex flex-col gap-4 text-center md:hidden shadow-lg">
             {[
               { id: 'about', label: 'About' },
               { id: 'experience', label: 'Experience' },
@@ -360,8 +343,8 @@ const Portfolio = () => {
                 key={item.id}
                 href={`#${item.id}`} 
                 onClick={() => { playClickSound(); setIsMobileMenuOpen(false); }} 
-                className={`text-lg font-bold py-2 ${
-                  activeSection === item.id ? 'text-[#D4A373] border-b border-[#D4A373]' : 'text-[#5B5042]'
+                className={`text-base font-medium py-1.5 ${
+                  activeSection === item.id ? 'text-[#0071E3] font-semibold' : 'text-[#86868B]'
                 }`}
               >
                 {item.label}
@@ -373,7 +356,7 @@ const Portfolio = () => {
               target="_blank" 
               rel="noreferrer"
               onClick={() => { playClickSound(); setIsMobileMenuOpen(false); }}
-              className="mt-2 py-3 bg-[#D4A373] text-white font-black text-base rounded-xl shadow-md flex items-center justify-center gap-2"
+              className="mt-2 py-2.5 bg-[#0071E3] text-white font-medium text-sm rounded-full shadow-xs flex items-center justify-center gap-2"
             >
               <FaFileDownload /> Download Resume
             </a>
@@ -384,34 +367,34 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section id="about" className="relative z-10 pt-28 md:pt-40 pb-16 md:pb-28 px-4 md:px-8 max-w-7xl mx-auto min-h-screen flex flex-col justify-center">
         <div className="text-center mb-6 md:mb-10">
-          <p className="text-2xl md:text-3xl font-serif italic text-[#D4A373] tracking-wide">Hey, there</p>
+          <p className="text-xl md:text-2xl font-normal text-[#86868B]">Hey, there</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 items-center">
           <div className="lg:col-span-3 text-center lg:text-left space-y-3">
-            <span className="text-xs md:text-sm font-mono text-[#8B9862] tracking-widest uppercase block font-bold">● Available for selected roles</span>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#2D261E] leading-tight">
-              I AM<br /><span className="text-[#D4A373]">ANJALI</span>
+            <span className="text-xs font-mono text-[#0071E3] tracking-wider uppercase block font-semibold">● Available for selected roles</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
+              I AM<br /><span className="text-[#0071E3]">ANJALI</span>
             </h1>
           </div>
 
-          {/* Profile Image Frame */}
+          {/* Profile Image Card */}
           <div className="lg:col-span-6 flex justify-center my-4 lg:my-0">
-            <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border-4 border-[#CCD5AE] shadow-xl hover:scale-105 transition duration-500">
+            <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border border-[#E5E5EA] shadow-lg hover:scale-102 transition duration-500 bg-white">
               <img 
                 src="./photo.png" 
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"; }}
                 alt="Anjali Yadav Profile" 
-                className="w-full h-full object-cover object-top filter brightness-100 contrast-105"
+                className="w-full h-full object-cover object-top filter brightness-100 contrast-100"
               />
             </div>
           </div>
 
           <div className="lg:col-span-3 text-center lg:text-right space-y-3 md:space-y-4">
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D261E] leading-tight">
-              DATA<br /><span className="text-[#D4A373]">ANALYST</span>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-semibold text-[#1D1D1F] leading-tight">
+              DATA<br /><span className="text-[#0071E3]">ANALYST</span>
             </h2>
-            <p className="text-[#5B5042] text-sm md:text-base leading-relaxed font-medium">
+            <p className="text-[#86868B] text-sm md:text-base leading-relaxed font-normal">
               Specialized in Python, SQL (BigQuery), Power BI, and Predictive Analytics. Experienced in building automated data workflows and executive dashboards.
             </p>
           </div>
@@ -419,13 +402,13 @@ const Portfolio = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
-        <h2 className="text-3xl sm:text-5xl font-black text-[#D4A373] mb-8">
+      <section id="experience" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5E5EA]">
+        <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] mb-8 tracking-tight">
           Professional Experience
         </h2>
 
-        {/* Workflow Nodes */}
-        <div className="mb-8 md:mb-12 bg-[#FAEDCD]/80 border border-[#E9EDC9] rounded-3xl p-4 md:p-8 backdrop-blur-md">
+        {/* Workflow Grid */}
+        <div className="mb-8 md:mb-12 bg-white/70 border border-[#E5E5EA] rounded-3xl p-4 md:p-8 shadow-xs backdrop-blur-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 relative">
             {mapNodes.map((node, nIdx) => (
               <div 
@@ -433,84 +416,84 @@ const Portfolio = () => {
                 onClick={() => { playClickSound(); setActiveMapNode(nIdx); }}
                 className={`p-5 md:p-6 rounded-2xl border transition-all duration-300 cursor-pointer relative overflow-hidden group ${
                   activeMapNode === nIdx 
-                    ? 'bg-[#CCD5AE] border-[#D4A373] shadow-md scale-102 md:scale-105' 
-                    : 'bg-[#FEFAE0] border-[#E9EDC9] hover:border-[#D4A373]'
+                    ? 'bg-[#F5F5F7] border-[#0071E3] shadow-xs scale-102' 
+                    : 'bg-white border-[#E5E5EA] hover:border-[#86868B]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className={`p-2.5 rounded-xl text-xl md:text-2xl ${activeMapNode === nIdx ? 'bg-[#D4A373] text-white' : 'bg-[#E9EDC9] text-[#2D261E]'}`}>
+                  <div className={`p-2.5 rounded-xl text-xl md:text-2xl ${activeMapNode === nIdx ? 'bg-[#0071E3] text-white' : 'bg-[#F5F5F7] text-[#0071E3]'}`}>
                     {node.icon}
                   </div>
-                  <span className="text-xs font-mono font-bold text-[#8B9862]">0{node.id}</span>
+                  <span className="text-xs font-mono font-semibold text-[#86868B]">0{node.id}</span>
                 </div>
-                <h4 className="text-sm md:text-base font-bold text-[#2D261E] mb-1.5">{node.name}</h4>
-                <p className="text-[#5B5042] text-xs leading-relaxed">{node.desc}</p>
+                <h4 className="text-sm md:text-base font-semibold text-[#1D1D1F] mb-1.5">{node.name}</h4>
+                <p className="text-[#86868B] text-xs leading-relaxed">{node.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Experience Details */}
-        <div className="bg-[#FAEDCD]/90 border border-[#E9EDC9] hover:border-[#D4A373] rounded-3xl p-6 md:p-12 transition-all duration-500 shadow-lg group">
+        <div className="bg-white border border-[#E5E5EA] hover:border-[#0071E3] rounded-3xl p-6 md:p-12 transition-all duration-300 shadow-sm group">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <div>
-              <span className="px-4 py-1.5 bg-[#CCD5AE] text-[#2D261E] border border-[#B3BE91] rounded-full text-xs md:text-sm font-mono inline-block mb-3 font-bold">
+              <span className="px-3.5 py-1 bg-[#F5F5F7] text-[#1D1D1F] border border-[#E5E5EA] rounded-full text-xs font-mono inline-block mb-3 font-semibold">
                 JUL 2025 – MAR 2026
               </span>
-              <h3 className="text-2xl sm:text-4xl font-black text-[#2D261E] group-hover:text-[#D4A373] transition">Senior Production Associate</h3>
-              <p className="text-[#D4A373] text-lg md:text-xl font-bold mt-1">IQVIA • Bangalore, India</p>
+              <h3 className="text-2xl sm:text-4xl font-semibold text-[#1D1D1F] group-hover:text-[#0071E3] transition">Senior Production Associate</h3>
+              <p className="text-[#0071E3] text-lg md:text-xl font-medium mt-1">IQVIA • Bangalore, India</p>
             </div>
-            <div className="p-4 md:p-5 bg-[#E9EDC9] border border-[#CCD5AE] rounded-2xl text-[#2D261E] hidden sm:block">
-              <FaBriefcase className="text-3xl md:text-4xl" />
+            <div className="p-4 md:p-5 bg-[#F5F5F7] border border-[#E5E5EA] rounded-2xl text-[#1D1D1F] hidden sm:block">
+              <FaBriefcase className="text-2xl md:text-3xl text-[#0071E3]" />
             </div>
           </div>
 
-          <div className="space-y-4 text-[#3D3228] text-base md:text-lg leading-relaxed font-normal">
-            <p className="font-semibold text-[#2D261E] text-lg md:text-xl mb-3">
+          <div className="space-y-4 text-[#1D1D1F] text-base md:text-lg leading-relaxed font-normal">
+            <p className="font-semibold text-[#1D1D1F] text-lg md:text-xl mb-3">
               Operational Data Analysis, MIS Automation & Analytics Execution:
             </p>
-            <ul className="space-y-3 md:space-y-4 list-disc list-inside text-sm md:text-lg">
-              <li>Engineered automated Excel VBA macros to streamline multi-source operational reporting, increasing workflow efficiency and reducing processing turnaround.</li>
-              <li>Reconciled and validated operational datasets using Power Query, Pivot Tables, and advanced lookup formulas to guarantee 100% reporting precision.</li>
-              <li>Executed exploratory data analysis, trend identification, and anomaly profiling to resolve recurring operational discrepancies.</li>
-              <li>Partnered with cross-functional stakeholders to translate operational reporting requirements into structured, automated data workflows.</li>
+            <ul className="space-y-3 md:space-y-4 list-disc list-inside text-sm md:text-lg text-[#86868B]">
+              <li><span className="text-[#1D1D1F]">Engineered automated Excel VBA macros</span> to streamline multi-source operational reporting, increasing workflow efficiency and reducing turnaround time.</li>
+              <li><span className="text-[#1D1D1F]">Reconciled and validated operational datasets</span> using Power Query, Pivot Tables, and lookup formulas to guarantee 100% precision.</li>
+              <li><span className="text-[#1D1D1F]">Executed exploratory data analysis</span>, trend identification, and anomaly profiling to resolve recurring operational discrepancies.</li>
+              <li><span className="text-[#1D1D1F]">Partnered with cross-functional stakeholders</span> to translate reporting requirements into structured automated workflows.</li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* Technical Skills Section */}
-      <section id="skills" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
-        <h2 className="text-3xl sm:text-5xl font-black text-[#D4A373] mb-8 md:mb-12">
+      {/* Skills Section */}
+      <section id="skills" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5E5EA]">
+        <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] mb-8 md:mb-12 tracking-tight">
           Technical Skills & Competencies
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {[
-            { cat: "Python & Analytics", icon: <FaCode className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Python (Pandas, NumPy)", level: 95 }, { name: "Exploratory Data Analysis (EDA)", level: 90 }, { name: "Trend & Anomaly Detection", level: 88 }, { name: "Scikit-Learn (Predictive ML)", level: 82 }] },
-            { cat: "SQL & Databases", icon: <FaDatabase className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "SQL (MySQL, BigQuery)", level: 95 }, { name: "CTEs & Window Functions", level: 92 }, { name: "Subqueries & Aggregations", level: 90 }, { name: "Data Profiling & Auditing", level: 88 }] },
-            { cat: "Business Intelligence", icon: <FaChartLine className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Power BI & DAX Modeling", level: 92 }, { name: "Tableau & Looker Studio", level: 85 }, { name: "KPI Dashboards", level: 90 }, { name: "SAP SAC & Metabase", level: 80 }] },
-            { cat: "Excel & Automation", icon: <FaCheckCircle className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "Advanced Excel (Pivot, XLOOKUP)", level: 98 }, { name: "VBA / Macro Automation", level: 90 }, { name: "Power Query ETL", level: 92 }, { name: "MIS & Operational Reporting", level: 95 }] },
-            { cat: "Data Quality & Analysis", icon: <FaCheckCircle className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Data Validation & Reconciliation", level: 95 }, { name: "Root Cause Analysis", level: 90 }, { name: "KPI Definition & Tracking", level: 88 }, { name: "What-If Analysis", level: 85 }] },
-            { cat: "Tools & Ecosystems", icon: <FaCode className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "Git & GitHub Workflow", level: 90 }, { name: "Docker & Local LLM Workflows", level: 82 }, { name: "Apache Spark / Hadoop", level: 75 }, { name: "Process Digitalization", level: 88 }] }
+            { cat: "Python & Analytics", icon: <FaCode className="text-[#0071E3] text-2xl" />, skills: [{ name: "Python (Pandas, NumPy)", level: 95 }, { name: "Exploratory Data Analysis (EDA)", level: 90 }, { name: "Trend & Anomaly Detection", level: 88 }, { name: "Scikit-Learn (Predictive ML)", level: 82 }] },
+            { cat: "SQL & Databases", icon: <FaDatabase className="text-[#0071E3] text-2xl" />, skills: [{ name: "SQL (MySQL, BigQuery)", level: 95 }, { name: "CTEs & Window Functions", level: 92 }, { name: "Subqueries & Aggregations", level: 90 }, { name: "Data Profiling & Auditing", level: 88 }] },
+            { cat: "Business Intelligence", icon: <FaChartLine className="text-[#0071E3] text-2xl" />, skills: [{ name: "Power BI & DAX Modeling", level: 92 }, { name: "Tableau & Looker Studio", level: 85 }, { name: "KPI Dashboards", level: 90 }, { name: "SAP SAC & Metabase", level: 80 }] },
+            { cat: "Excel & Automation", icon: <FaCheckCircle className="text-[#0071E3] text-2xl" />, skills: [{ name: "Advanced Excel (Pivot, XLOOKUP)", level: 98 }, { name: "VBA / Macro Automation", level: 90 }, { name: "Power Query ETL", level: 92 }, { name: "MIS & Operational Reporting", level: 95 }] },
+            { cat: "Data Quality & Analysis", icon: <FaCheckCircle className="text-[#0071E3] text-2xl" />, skills: [{ name: "Data Validation & Reconciliation", level: 95 }, { name: "Root Cause Analysis", level: 90 }, { name: "KPI Definition & Tracking", level: 88 }, { name: "What-If Analysis", level: 85 }] },
+            { cat: "Tools & Ecosystems", icon: <FaCode className="text-[#0071E3] text-2xl" />, skills: [{ name: "Git & GitHub Workflow", level: 90 }, { name: "Docker & Local LLM Workflows", level: 82 }, { name: "Apache Spark / Hadoop", level: 75 }, { name: "Process Digitalization", level: 88 }] }
           ].map((group, idx) => (
             <div 
               key={idx} 
-              className="bg-[#FAEDCD]/70 border border-[#E9EDC9] rounded-3xl p-6 md:p-8 hover:scale-102 hover:border-[#D4A373] shadow-md transition-all duration-300 cursor-pointer"
+              className="bg-white border border-[#E5E5EA] rounded-3xl p-6 md:p-8 hover:border-[#0071E3] transition-all duration-300 shadow-xs"
             >
-              <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 pb-3 border-b border-[#E9EDC9]">
+              <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 pb-3 border-b border-[#E5E5EA]">
                 {group.icon}
-                <h3 className="text-xl md:text-2xl font-bold text-[#2D261E]">{group.cat}</h3>
+                <h3 className="text-xl md:text-2xl font-semibold text-[#1D1D1F]">{group.cat}</h3>
               </div>
               <div className="space-y-3 md:space-y-4">
                 {group.skills.map((s, sIdx) => (
                   <div key={sIdx}>
-                    <div className="flex justify-between text-xs md:text-base font-mono mb-1">
-                      <span className="text-[#3D3228] font-bold">{s.name}</span>
-                      <span className="text-[#D4A373] font-extrabold">{s.level}%</span>
+                    <div className="flex justify-between text-xs md:text-sm font-medium mb-1">
+                      <span className="text-[#1D1D1F]">{s.name}</span>
+                      <span className="text-[#0071E3] font-semibold">{s.level}%</span>
                     </div>
-                    <div className="w-full bg-[#E9EDC9] rounded-full h-2 md:h-2.5 overflow-hidden">
-                      <div className="bg-[#D4A373] h-2 md:h-2.5 rounded-full" style={{ width: `${s.level}%` }} />
+                    <div className="w-full bg-[#F5F5F7] rounded-full h-2 overflow-hidden">
+                      <div className="bg-[#0071E3] h-2 rounded-full" style={{ width: `${s.level}%` }} />
                     </div>
                   </div>
                 ))}
@@ -521,9 +504,9 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
+      <section id="projects" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5E5EA]">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black text-[#2D261E]">Some of My Recent Work</h2>
+          <h2 className="text-3xl sm:text-5xl font-semibold text-[#1D1D1F] tracking-tight">Recent Projects</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -538,22 +521,22 @@ const Portfolio = () => {
             <div 
               key={idx} 
               onClick={() => triggerModal({ title: proj.title, subtitle: proj.tags.join(" • "), content: proj.desc, link: proj.link, img: proj.img })}
-              className="bg-[#FAEDCD]/80 border border-[#E9EDC9] rounded-3xl overflow-hidden hover:border-[#D4A373] hover:scale-102 transition-all duration-300 cursor-pointer group flex flex-col justify-between shadow-md"
+              className="bg-white border border-[#E5E5EA] rounded-3xl overflow-hidden hover:border-[#0071E3] transition-all duration-300 cursor-pointer group flex flex-col justify-between shadow-xs"
             >
               <div>
-                <div className="relative h-40 md:h-48 overflow-hidden bg-[#E9EDC9]">
-                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500 filter brightness-95" />
-                  <span className="absolute top-3 left-3 text-2xl md:text-3xl font-mono font-black text-[#D4A373] drop-shadow">{proj.num}</span>
+                <div className="relative h-40 md:h-48 overflow-hidden bg-[#F5F5F7]">
+                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-105 transition duration-500 filter brightness-95" />
+                  <span className="absolute top-3 left-3 text-2xl md:text-3xl font-mono font-semibold text-[#0071E3]">{proj.num}</span>
                 </div>
 
                 <div className="p-5 md:p-6">
                   <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
                     {proj.tags.map((t, tIdx) => (
-                      <span key={tIdx} className="px-2.5 py-1 bg-[#CCD5AE] text-[#2D261E] text-[10px] md:text-xs font-mono rounded font-bold">{t}</span>
+                      <span key={tIdx} className="px-2.5 py-0.5 bg-[#F5F5F7] text-[#1D1D1F] text-[10px] md:text-xs font-mono rounded-full font-medium border border-[#E5E5EA]">{t}</span>
                     ))}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-[#2D261E] mb-2 group-hover:text-[#D4A373] transition">{proj.title}</h3>
-                  <p className="text-[#5B5042] text-xs md:text-base leading-relaxed mb-4 md:mb-6">{proj.desc}</p>
+                  <h3 className="text-xl md:text-2xl font-semibold text-[#1D1D1F] mb-2 group-hover:text-[#0071E3] transition">{proj.title}</h3>
+                  <p className="text-[#86868B] text-xs md:text-sm leading-relaxed mb-4 md:mb-6">{proj.desc}</p>
                 </div>
               </div>
 
@@ -563,9 +546,9 @@ const Portfolio = () => {
                   target="_blank" 
                   rel="noreferrer" 
                   onClick={(e) => e.stopPropagation()} 
-                  className="inline-flex items-center gap-2 text-[#D4A373] text-xs md:text-base font-bold hover:underline"
+                  className="inline-flex items-center gap-2 text-[#0071E3] text-xs md:text-sm font-medium hover:underline"
                 >
-                  View project <FaGithub className="text-sm md:text-lg" />
+                  View project <FaGithub className="text-sm" />
                 </a>
               </div>
             </div>
@@ -574,47 +557,47 @@ const Portfolio = () => {
       </section>
 
       {/* Education & Achievements */}
-      <section id="education" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
+      <section id="education" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5E5EA]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-[#D4A373] flex items-center gap-3">
-              <FaGraduationCap /> Education
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6 md:mb-8 text-[#1D1D1F] flex items-center gap-3 tracking-tight">
+              <FaGraduationCap className="text-[#0071E3]" /> Education
             </h2>
             <div className="space-y-4 md:space-y-6">
-              <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
-                <h3 className="font-bold text-[#2D261E] text-xl md:text-2xl">Master of Computer Applications (MCA)</h3>
-                <p className="text-[#D4A373] text-base md:text-lg font-semibold mt-1">IIT Patna | 2025 – 2027</p>
-                <p className="text-[#5B5042] text-xs md:text-base mt-2 font-mono font-bold">CGPA: 8.4 / 10</p>
+              <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs">
+                <h3 className="font-semibold text-[#1D1D1F] text-xl md:text-2xl">Master of Computer Applications (MCA)</h3>
+                <p className="text-[#0071E3] text-base md:text-lg font-medium mt-1">IIT Patna | 2025 – 2027</p>
+                <p className="text-[#86868B] text-xs md:text-sm mt-2 font-mono font-medium">CGPA: 8.4 / 10</p>
               </div>
-              <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
-                <h3 className="font-bold text-[#2D261E] text-xl md:text-2xl">Bachelor of Computer Applications (BCA)</h3>
-                <p className="text-[#D4A373] text-base md:text-lg font-semibold mt-1">Kristu Jayanti College, Bangalore | 2022 – 2025</p>
-                <p className="text-[#5B5042] text-xs md:text-base mt-2 font-mono font-bold">CGPA: 7.9 / 10</p>
+              <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs">
+                <h3 className="font-semibold text-[#1D1D1F] text-xl md:text-2xl">Bachelor of Computer Applications (BCA)</h3>
+                <p className="text-[#0071E3] text-base md:text-lg font-medium mt-1">Kristu Jayanti College, Bangalore | 2022 – 2025</p>
+                <p className="text-[#86868B] text-xs md:text-sm mt-2 font-mono font-medium">CGPA: 7.9 / 10</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-[#D4A373] flex items-center gap-3">
-              <FaAward /> Certifications & Badges
+            <h2 className="text-3xl md:text-4xl font-semibold mb-6 md:mb-8 text-[#1D1D1F] flex items-center gap-3 tracking-tight">
+              <FaAward className="text-[#0071E3]" /> Certifications & Badges
             </h2>
-            <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
-              <div className="flex items-center gap-4 pb-4 border-b border-[#E9EDC9]">
-                <span className="text-[#D4A373] font-black text-3xl md:text-4xl">5★</span>
+            <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:border-[#0071E3] transition duration-300 shadow-xs">
+              <div className="flex items-center gap-4 pb-4 border-b border-[#E5E5EA]">
+                <span className="text-[#0071E3] font-semibold text-3xl md:text-4xl">5★</span>
                 <div>
-                  <h4 className="text-[#2D261E] font-bold text-base md:text-lg">HackerRank Gold Badge in SQL & Python</h4>
+                  <h4 className="text-[#1D1D1F] font-semibold text-base md:text-lg">HackerRank Gold Badge in SQL & Python</h4>
                   <a 
                     href="https://www.hackerrank.com/profile/anjaliyadavpers1" 
                     target="_blank" 
                     rel="noreferrer" 
                     onClick={playClickSound}
-                    className="inline-flex items-center gap-1.5 text-xs md:text-base text-[#D4A373] font-bold hover:underline mt-1"
+                    className="inline-flex items-center gap-1.5 text-xs md:text-sm text-[#0071E3] font-medium hover:underline mt-1"
                   >
                     HackerRank Profile <FaExternalLinkAlt className="text-xs" />
                   </a>
                 </div>
               </div>
-              <ul className="space-y-2.5 md:space-y-3 text-xs md:text-base text-[#3D3228] font-medium">
+              <ul className="space-y-2.5 md:space-y-3 text-xs md:text-sm text-[#86868B] font-normal">
                 <li>• SQL Advanced — HackerRank</li>
                 <li>• Introduction to Data Analysis Using Python — Google</li>
                 <li>• Data Analytics Essentials — Cisco</li>
@@ -627,46 +610,46 @@ const Portfolio = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
+      <section id="contact" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E5E5EA]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
           <div className="lg:col-span-5 space-y-4 md:space-y-6">
-            <h2 className="text-4xl sm:text-6xl font-black text-[#2D261E] tracking-tight">Get in touch</h2>
+            <h2 className="text-4xl sm:text-6xl font-semibold text-[#1D1D1F] tracking-tight">Get in touch</h2>
             
             <div className="space-y-4 md:space-y-6 pt-2 md:pt-4">
               <div>
-                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase font-bold">Email</p>
-                <a href="mailto:anjaliyadavpersonal2001@gmail.com" className="text-base sm:text-xl font-bold text-[#D4A373] hover:underline break-all">
+                <p className="text-xs font-mono text-[#86868B] uppercase font-semibold">Email</p>
+                <a href="mailto:anjaliyadavpersonal2001@gmail.com" className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline break-all">
                   anjaliyadavpersonal2001@gmail.com
                 </a>
               </div>
 
               <div>
-                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase font-bold">Phone</p>
-                <a href="tel:+919845483651" className="text-base sm:text-xl font-bold text-[#D4A373] hover:underline">
+                <p className="text-xs font-mono text-[#86868B] uppercase font-semibold">Phone</p>
+                <a href="tel:+919845483651" className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline">
                   +91-9845483651
                 </a>
               </div>
 
               <div>
-                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase mb-3 font-bold">FOLLOW ON</p>
+                <p className="text-xs font-mono text-[#86868B] uppercase mb-3 font-semibold">Connect</p>
                 <div className="flex gap-4">
-                  <a href="https://linkedin.com/in/anjali-yadav-dev" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-[#CCD5AE] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white transition shadow">
-                    <FaLinkedin className="text-xl md:text-2xl" />
+                  <a href="https://linkedin.com/in/anjali-yadav-dev" target="_blank" rel="noreferrer" className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs">
+                    <FaLinkedin className="text-xl" />
                   </a>
-                  <a href="https://github.com/AnjaliAnalytics" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-[#CCD5AE] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white transition shadow">
-                    <FaGithub className="text-xl md:text-2xl" />
+                  <a href="https://github.com/AnjaliAnalytics" target="_blank" rel="noreferrer" className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs">
+                    <FaGithub className="text-xl" />
                   </a>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Form */}
-          <div className="lg:col-span-7 bg-[#FAEDCD] border border-[#E9EDC9] rounded-3xl p-6 md:p-10 shadow-lg">
+          {/* Contact Form */}
+          <div className="lg:col-span-7 bg-white border border-[#E5E5EA] rounded-3xl p-6 md:p-10 shadow-xs">
             <form onSubmit={handleFormSubmit} className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Your Name (Max 50 chars)</label>
+                  <label className="text-xs font-medium text-[#1D1D1F] block mb-1.5">Your Name (Max 50 chars)</label>
                   <input 
                     type="text" 
                     required
@@ -674,11 +657,11 @@ const Portfolio = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
+                    className="w-full bg-[#F5F5F7] border border-[#E5E5EA] rounded-xl px-4 py-3 text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Email address</label>
+                  <label className="text-xs font-medium text-[#1D1D1F] block mb-1.5">Email address</label>
                   <input 
                     type="email" 
                     required
@@ -688,7 +671,7 @@ const Portfolio = () => {
                       if (formErrors.email) setFormErrors({ ...formErrors, email: '' });
                     }}
                     placeholder="john@example.com"
-                    className={`w-full bg-[#FEFAE0] border ${formErrors.email ? 'border-red-500' : 'border-[#E9EDC9]'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]`}
+                    className={`w-full bg-[#F5F5F7] border ${formErrors.email ? 'border-red-500' : 'border-[#E5E5EA]'} rounded-xl px-4 py-3 text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]`}
                   />
                   {formErrors.email && <p className="text-red-500 text-xs font-mono mt-1">{formErrors.email}</p>}
                 </div>
@@ -696,7 +679,7 @@ const Portfolio = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Phone (10 Digits)</label>
+                  <label className="text-xs font-medium text-[#1D1D1F] block mb-1.5">Phone (10 Digits)</label>
                   <input 
                     type="tel" 
                     required
@@ -706,45 +689,45 @@ const Portfolio = () => {
                       if (formErrors.phone) setFormErrors({ ...formErrors, phone: '' });
                     }}
                     placeholder="+91 0000000000"
-                    className={`w-full bg-[#FEFAE0] border ${formErrors.phone ? 'border-red-500' : 'border-[#E9EDC9]'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]`}
+                    className={`w-full bg-[#F5F5F7] border ${formErrors.phone ? 'border-red-500' : 'border-[#E5E5EA]'} rounded-xl px-4 py-3 text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]`}
                   />
                   {formErrors.phone && <p className="text-red-500 text-xs font-mono mt-1">{formErrors.phone}</p>}
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Subject</label>
+                  <label className="text-xs font-medium text-[#1D1D1F] block mb-1.5">Subject</label>
                   <input 
                     type="text" 
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     placeholder="Data Analytics Opportunity"
-                    className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
+                    className="w-full bg-[#F5F5F7] border border-[#E5E5EA] rounded-xl px-4 py-3 text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Message</label>
+                <label className="text-xs font-medium text-[#1D1D1F] block mb-1.5">Message</label>
                 <textarea 
                   rows="4"
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Hello Anjali, I reviewed your analytics portfolio..."
-                  className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
+                  className="w-full bg-[#F5F5F7] border border-[#E5E5EA] rounded-xl px-4 py-3 text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]"
                 />
               </div>
 
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-3.5 md:py-4 bg-[#D4A373] text-white font-black text-base md:text-lg rounded-xl hover:bg-[#c29263] transition duration-300 shadow-md flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full py-3.5 bg-[#0071E3] text-white font-medium text-base rounded-xl hover:bg-[#0077ED] transition duration-300 shadow-xs flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {isSubmitting ? 'Sending Message...' : 'Send Message'} <FaSend />
+                {isSubmitting ? 'Sending...' : 'Send Message'} <FaSend />
               </button>
 
               {formSubmitted && (
-                <p className="text-[#8B9862] text-sm md:text-base font-mono text-center animate-bounce font-bold">
+                <p className="text-[#0071E3] text-sm font-mono text-center animate-bounce font-medium">
                   Thank you! Your message has been sent.
                 </p>
               )}
@@ -753,31 +736,31 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Pop-Up Modal */}
+      {/* Detail Pop-Up Modal */}
       {activeModal && (
         <div 
           onClick={() => { playClickSound(); setActiveModal(null); }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/40 backdrop-blur-xs"
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="bg-[#FEFAE0] border border-[#E9EDC9] rounded-3xl p-6 md:p-10 max-w-2xl w-full shadow-2xl relative animate-in fade-in duration-200 max-h-[90vh] overflow-y-auto"
+            className="bg-white border border-[#E5E5EA] rounded-3xl p-6 md:p-10 max-w-2xl w-full shadow-xl relative animate-in fade-in duration-200 max-h-[90vh] overflow-y-auto"
           >
             <button 
               onClick={() => { playClickSound(); setActiveModal(null); }}
-              className="absolute top-4 right-4 md:top-6 md:right-6 text-[#5B5042] hover:text-[#2D261E] text-2xl md:text-3xl transition"
+              className="absolute top-4 right-4 text-[#86868B] hover:text-[#1D1D1F] text-2xl transition"
             >
               <FaTimesCircle />
             </button>
 
             {activeModal.img && (
-              <img src={activeModal.img} alt={activeModal.title} className="w-full h-36 md:h-44 object-cover rounded-2xl mb-4 md:mb-6 border border-[#E9EDC9]" />
+              <img src={activeModal.img} alt={activeModal.title} className="w-full h-36 md:h-44 object-cover rounded-2xl mb-4 md:mb-6 border border-[#E5E5EA]" />
             )}
 
-            <span className="text-xs font-mono text-[#D4A373] uppercase font-bold">// DETAILS VIEW</span>
-            <h3 className="text-2xl md:text-3xl font-black text-[#2D261E] mt-1 mb-2">{activeModal.title}</h3>
-            <p className="text-xs md:text-sm font-mono text-[#8B9862] mb-4 md:mb-6 font-bold">{activeModal.subtitle}</p>
-            <p className="text-[#3D3228] text-sm md:text-lg leading-relaxed mb-6 md:mb-8">{activeModal.content}</p>
+            <span className="text-xs font-mono text-[#0071E3] uppercase font-semibold">// DETAILS</span>
+            <h3 className="text-2xl md:text-3xl font-semibold text-[#1D1D1F] mt-1 mb-2">{activeModal.title}</h3>
+            <p className="text-xs md:text-sm font-mono text-[#86868B] mb-4 md:mb-6">{activeModal.subtitle}</p>
+            <p className="text-[#86868B] text-sm md:text-base leading-relaxed mb-6 md:mb-8">{activeModal.content}</p>
             
             {activeModal.link && (
               <a 
@@ -785,9 +768,9 @@ const Portfolio = () => {
                 target="_blank"
                 rel="noreferrer"
                 onClick={playClickSound}
-                className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 bg-[#D4A373] text-white font-black text-xs md:text-base rounded-xl hover:bg-[#c29263] transition"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-[#0071E3] text-white font-medium text-sm rounded-xl hover:bg-[#0077ED] transition"
               >
-                View project GitHub link <FaGithub className="text-base md:text-xl" />
+                View project GitHub link <FaGithub className="text-base" />
               </a>
             )}
           </div>
@@ -799,44 +782,44 @@ const Portfolio = () => {
         {!isChatOpen ? (
           <button 
             onClick={handleToggleChat}
-            className="flex items-center gap-3 md:gap-4 px-5 py-3 md:px-7 md:py-4 bg-[#D4A373] text-white font-black rounded-full shadow-xl hover:scale-105 transition duration-300 text-sm md:text-lg"
+            className="flex items-center gap-3 px-5 py-3 bg-[#0071E3] text-white font-medium rounded-full shadow-lg hover:bg-[#0077ED] transition duration-300 text-sm md:text-base"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white bg-[#CCD5AE] flex items-center justify-center">
+            <div className="w-7 h-7 rounded-full overflow-hidden border border-white bg-[#F5F5F7]">
               <img 
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" 
-                alt="Tia 3D Avatar" 
+                alt="Tia AI Avatar" 
                 className="w-full h-full object-cover"
               />
             </div>
             Ask Tia AI
           </button>
         ) : (
-          <div className="w-[calc(100vw-2rem)] sm:w-88 md:w-[26rem] bg-[#FEFAE0] border border-[#E9EDC9] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[28rem] md:h-[32rem] animate-in slide-in-from-bottom-5 duration-300">
+          <div className="w-[calc(100vw-2rem)] sm:w-88 md:w-[26rem] bg-white border border-[#E5E5EA] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[28rem] md:h-[32rem] animate-in slide-in-from-bottom-5 duration-300">
             {/* Header */}
-            <div className="bg-[#FAEDCD] p-4 md:p-5 border-b border-[#E9EDC9] flex justify-between items-center">
+            <div className="bg-[#F5F5F7] p-4 border-b border-[#E5E5EA] flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#D4A373] bg-[#CCD5AE]">
+                <div className="w-9 h-9 rounded-full overflow-hidden border border-[#0071E3]">
                   <img 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" 
-                    alt="Tia 3D Avatar" 
+                    alt="Tia AI Avatar" 
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-[#2D261E] text-base md:text-lg">Tia</h4>
-                  <span className="text-[10px] md:text-xs text-[#D4A373] font-mono">Portfolio AI Assistant</span>
+                  <h4 className="font-semibold text-[#1D1D1F] text-sm md:text-base">Tia</h4>
+                  <span className="text-[10px] md:text-xs text-[#0071E3] font-mono">Portfolio AI Assistant</span>
                 </div>
               </div>
-              <button onClick={handleToggleChat} className="text-[#5B5042] hover:text-[#2D261E] text-lg md:text-xl">
+              <button onClick={handleToggleChat} className="text-[#86868B] hover:text-[#1D1D1F] text-lg">
                 <FaTimes />
               </button>
             </div>
 
-            {/* Chat Body */}
-            <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-3 md:space-y-4 text-xs md:text-base">
+            {/* Messages */}
+            <div className="flex-1 p-4 overflow-y-auto space-y-3 text-xs md:text-sm">
               {chatMessages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`p-3 md:p-4 rounded-2xl max-w-[85%] whitespace-pre-line ${msg.sender === 'user' ? 'bg-[#D4A373] text-white font-semibold' : 'bg-[#FAEDCD] border border-[#E9EDC9] text-[#2D261E]'}`}>
+                  <div className={`p-3 rounded-2xl max-w-[85%] whitespace-pre-line ${msg.sender === 'user' ? 'bg-[#0071E3] text-white font-medium' : 'bg-[#F5F5F7] border border-[#E5E5EA] text-[#1D1D1F]'}`}>
                     {msg.text}
                   </div>
                 </div>
@@ -844,30 +827,30 @@ const Portfolio = () => {
               <div ref={chatEndRef} />
             </div>
 
-            {/* Chips */}
-            <div className="p-2 md:p-3 bg-[#FAEDCD]/50 border-t border-[#E9EDC9] flex gap-2 overflow-x-auto text-[11px] md:text-xs">
+            {/* Quick Prompt Chips */}
+            <div className="p-2 bg-[#F5F5F7]/60 border-t border-[#E5E5EA] flex gap-2 overflow-x-auto text-[11px]">
               {['Experience', 'Education', 'Skills', 'Contact', 'Projects', 'Resume'].map((chip, cIdx) => (
                 <button 
                   key={cIdx} 
                   onClick={() => handleSendMessage(`Tell me about her ${chip}`)}
-                  className="px-3 py-1 md:px-3.5 md:py-1.5 bg-[#CCD5AE] border border-[#E9EDC9] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white font-bold whitespace-nowrap"
+                  className="px-3 py-1 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] font-medium whitespace-nowrap"
                 >
                   {chip}
                 </button>
               ))}
             </div>
 
-            {/* Input Form */}
-            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="p-3 md:p-4 bg-[#FAEDCD] border-t border-[#E9EDC9] flex gap-2">
+            {/* Input Bar */}
+            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="p-3 bg-[#F5F5F7] border-t border-[#E5E5EA] flex gap-2">
               <input 
                 type="text" 
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Ask Tia a question..."
-                className="flex-1 bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
+                className="flex-1 bg-white border border-[#E5E5EA] rounded-xl px-3 py-2 text-xs md:text-sm text-[#1D1D1F] focus:outline-none focus:border-[#0071E3]"
               />
-              <button type="submit" className="p-3 md:p-3.5 bg-[#D4A373] text-white rounded-xl hover:bg-[#c29263] transition">
-                <FaPaperPlane className="text-xs md:text-sm" />
+              <button type="submit" className="p-2.5 bg-[#0071E3] text-white rounded-xl hover:bg-[#0077ED] transition">
+                <FaSend className="text-xs" />
               </button>
             </form>
           </div>
@@ -875,7 +858,7 @@ const Portfolio = () => {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 md:py-12 border-t border-[#E9EDC9] text-center text-xs md:text-base text-[#D4A373] font-mono tracking-wide px-4">
+      <footer className="relative z-10 py-8 md:py-12 border-t border-[#E5E5EA] text-center text-xs md:text-sm text-[#86868B] font-mono tracking-normal px-4">
         "In God we trust; all others must bring data." — W. Edwards Deming
       </footer>
     </div>
