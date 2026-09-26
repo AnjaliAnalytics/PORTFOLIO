@@ -7,7 +7,7 @@ import {
   FaPaperPlane as FaSend, FaBars, FaFileDownload
 } from 'react-icons/fa';
 
-// Web Audio API Click Sound
+// Web Audio API Synthesizer Click Sound
 const playClickSound = () => {
   try {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,7 +38,7 @@ const Portfolio = () => {
   const [userInput, setUserInput] = useState('');
   const chatEndRef = useRef(null);
 
-  // Form State
+  // Form State & Validation
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [formErrors, setFormErrors] = useState({ email: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -322,7 +322,7 @@ const Portfolio = () => {
 
         {/* Mobile Menu Button */}
         <button 
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
+          onClick={() => { playClickSound(); setIsMobileMenuOpen(!isMobileMenuOpen); }} 
           className="md:hidden text-[#1D1D1F] text-xl p-2 focus:outline-none"
         >
           {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
@@ -372,7 +372,6 @@ const Portfolio = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 items-center">
           <div className="lg:col-span-3 text-center lg:text-left space-y-3">
-            
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
               I AM<br /><span className="text-[#0071E3]">ANJALI</span>
             </h1>
@@ -380,7 +379,10 @@ const Portfolio = () => {
 
           {/* Profile Image Card */}
           <div className="lg:col-span-6 flex justify-center my-4 lg:my-0">
-            <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border border-[#E5E5EA] shadow-lg hover:scale-102 transition duration-500 bg-white">
+            <div 
+              onClick={playClickSound}
+              className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border border-[#E5E5EA] shadow-lg hover:scale-102 transition duration-500 bg-white cursor-pointer"
+            >
               <img 
                 src="./photo.png" 
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"; }}
@@ -434,7 +436,10 @@ const Portfolio = () => {
         </div>
 
         {/* Experience Details */}
-        <div className="bg-white border border-[#E5E5EA] hover:border-[#0071E3] rounded-3xl p-6 md:p-12 transition-all duration-300 shadow-sm group">
+        <div 
+          onClick={playClickSound}
+          className="bg-white border border-[#E5E5EA] hover:border-[#0071E3] rounded-3xl p-6 md:p-12 transition-all duration-300 shadow-sm group cursor-pointer"
+        >
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <div>
               <span className="px-3.5 py-1 bg-[#F5F5F7] text-[#1D1D1F] border border-[#E5E5EA] rounded-full text-xs font-mono inline-block mb-3 font-semibold">
@@ -479,7 +484,8 @@ const Portfolio = () => {
           ].map((group, idx) => (
             <div 
               key={idx} 
-              className="bg-white border border-[#E5E5EA] rounded-3xl p-6 md:p-8 hover:border-[#0071E3] transition-all duration-300 shadow-xs"
+              onClick={playClickSound}
+              className="bg-white border border-[#E5E5EA] rounded-3xl p-6 md:p-8 hover:border-[#0071E3] transition-all duration-300 shadow-xs cursor-pointer"
             >
               <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 pb-3 border-b border-[#E5E5EA]">
                 {group.icon}
@@ -545,7 +551,7 @@ const Portfolio = () => {
                   href={proj.link} 
                   target="_blank" 
                   rel="noreferrer" 
-                  onClick={(e) => e.stopPropagation()} 
+                  onClick={(e) => { e.stopPropagation(); playClickSound(); }} 
                   className="inline-flex items-center gap-2 text-[#0071E3] text-xs md:text-sm font-medium hover:underline"
                 >
                   View project <FaGithub className="text-sm" />
@@ -564,12 +570,18 @@ const Portfolio = () => {
               <FaGraduationCap className="text-[#0071E3]" /> Education
             </h2>
             <div className="space-y-4 md:space-y-6">
-              <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs">
+              <div 
+                onClick={playClickSound}
+                className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs cursor-pointer"
+              >
                 <h3 className="font-semibold text-[#1D1D1F] text-xl md:text-2xl">Master of Computer Applications (MCA)</h3>
                 <p className="text-[#0071E3] text-base md:text-lg font-medium mt-1">IIT Patna | 2025 – 2027</p>
                 <p className="text-[#86868B] text-xs md:text-sm mt-2 font-mono font-medium">CGPA: 8.4 / 10</p>
               </div>
-              <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs">
+              <div 
+                onClick={playClickSound}
+                className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl hover:border-[#0071E3] transition duration-300 shadow-xs cursor-pointer"
+              >
                 <h3 className="font-semibold text-[#1D1D1F] text-xl md:text-2xl">Bachelor of Computer Applications (BCA)</h3>
                 <p className="text-[#0071E3] text-base md:text-lg font-medium mt-1">Kristu Jayanti College, Bangalore | 2022 – 2025</p>
                 <p className="text-[#86868B] text-xs md:text-sm mt-2 font-mono font-medium">CGPA: 7.9 / 10</p>
@@ -581,7 +593,10 @@ const Portfolio = () => {
             <h2 className="text-3xl md:text-4xl font-semibold mb-6 md:mb-8 text-[#1D1D1F] flex items-center gap-3 tracking-tight">
               <FaAward className="text-[#0071E3]" /> Certifications & Badges
             </h2>
-            <div className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:border-[#0071E3] transition duration-300 shadow-xs">
+            <div 
+              onClick={playClickSound}
+              className="bg-white border border-[#E5E5EA] p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:border-[#0071E3] transition duration-300 shadow-xs cursor-pointer"
+            >
               <div className="flex items-center gap-4 pb-4 border-b border-[#E5E5EA]">
                 <span className="text-[#0071E3] font-semibold text-3xl md:text-4xl">5★</span>
                 <div>
@@ -590,7 +605,7 @@ const Portfolio = () => {
                     href="https://www.hackerrank.com/profile/anjaliyadavpers1" 
                     target="_blank" 
                     rel="noreferrer" 
-                    onClick={playClickSound}
+                    onClick={(e) => { e.stopPropagation(); playClickSound(); }}
                     className="inline-flex items-center gap-1.5 text-xs md:text-sm text-[#0071E3] font-medium hover:underline mt-1"
                   >
                     HackerRank Profile <FaExternalLinkAlt className="text-xs" />
@@ -618,14 +633,22 @@ const Portfolio = () => {
             <div className="space-y-4 md:space-y-6 pt-2 md:pt-4">
               <div>
                 <p className="text-xs font-mono text-[#86868B] uppercase font-semibold">Email</p>
-                <a href="mailto:anjaliyadavpersonal2001@gmail.com" className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline break-all">
+                <a 
+                  href="mailto:anjaliyadavpersonal2001@gmail.com" 
+                  onClick={playClickSound}
+                  className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline break-all"
+                >
                   anjaliyadavpersonal2001@gmail.com
                 </a>
               </div>
 
               <div>
                 <p className="text-xs font-mono text-[#86868B] uppercase font-semibold">Phone</p>
-                <a href="tel:+919845483651" className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline">
+                <a 
+                  href="tel:+919845483651" 
+                  onClick={playClickSound}
+                  className="text-base sm:text-xl font-medium text-[#0071E3] hover:underline"
+                >
                   +91-9845483651
                 </a>
               </div>
@@ -633,10 +656,22 @@ const Portfolio = () => {
               <div>
                 <p className="text-xs font-mono text-[#86868B] uppercase mb-3 font-semibold">Connect</p>
                 <div className="flex gap-4">
-                  <a href="https://linkedin.com/in/anjali-yadav-dev" target="_blank" rel="noreferrer" className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs">
+                  <a 
+                    href="https://linkedin.com/in/anjali-yadav-dev" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    onClick={playClickSound}
+                    className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs"
+                  >
                     <FaLinkedin className="text-xl" />
                   </a>
-                  <a href="https://github.com/AnjaliAnalytics" target="_blank" rel="noreferrer" className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs">
+                  <a 
+                    href="https://github.com/AnjaliAnalytics" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    onClick={playClickSound}
+                    className="p-3.5 bg-white border border-[#E5E5EA] text-[#1D1D1F] rounded-full hover:border-[#0071E3] hover:text-[#0071E3] transition shadow-xs"
+                  >
                     <FaGithub className="text-xl" />
                   </a>
                 </div>
