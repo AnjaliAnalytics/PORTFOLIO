@@ -372,7 +372,7 @@ const Portfolio = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 items-center">
           <div className="lg:col-span-3 text-center lg:text-left space-y-3">
-            <span className="text-xs font-mono text-[#0071E3] tracking-wider uppercase block font-semibold">● Available for selected roles</span>
+            
             <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-[#1D1D1F] leading-tight">
               I AM<br /><span className="text-[#0071E3]">ANJALI</span>
             </h1>
