@@ -14,9 +14,9 @@ const playClickSound = () => {
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.05);
-    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.05);
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
     osc.connect(gain);
     gain.connect(audioCtx.destination);
@@ -71,7 +71,7 @@ const Portfolio = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatMessages, isChatOpen]);
 
-  // Three.js 3D Background Engine
+  // Three.js 3D Warm Background Engine
   useEffect(() => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -81,7 +81,7 @@ const Portfolio = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    const particlesCount = 800;
+    const particlesCount = 700;
     const posArray = new Float32Array(particlesCount * 3);
     for(let i = 0; i < particlesCount * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 20;
@@ -90,17 +90,17 @@ const Portfolio = () => {
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particleMat = new THREE.PointsMaterial({
-      size: 0.035,
-      color: 0x00f0ff,
+      size: 0.04,
+      color: 0xD4A373,
       transparent: true,
-      opacity: 0.75
+      opacity: 0.6
     });
     const particlesMesh = new THREE.Points(particleGeo, particleMat);
     scene.add(particlesMesh);
 
     const barsGroup = new THREE.Group();
-    const barMaterial = new THREE.MeshBasicMaterial({ color: 0x7000ff, wireframe: true, transparent: true, opacity: 0.35 });
-    for (let i = 0; i < 12; i++) {
+    const barMaterial = new THREE.MeshBasicMaterial({ color: 0xCCD5AE, wireframe: true, transparent: true, opacity: 0.4 });
+    for (let i = 0; i < 10; i++) {
       const height = Math.random() * 2.5 + 0.5;
       const geometry = new THREE.BoxGeometry(0.4, height, 0.4);
       const bar = new THREE.Mesh(geometry, barMaterial);
@@ -287,22 +287,22 @@ const Portfolio = () => {
   ];
 
   return (
-    <div className="bg-[#0A0B0E] text-slate-100 min-h-screen font-sans relative overflow-x-hidden selection:bg-cyan-500 selection:text-black text-base md:text-lg">
-      {/* 3D Background Canvas */}
-      <div ref={mountRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-50" />
+    <div className="bg-[#FEFAE0] text-[#3D3228] min-h-screen font-sans relative overflow-x-hidden selection:bg-[#D4A373] selection:text-white text-base md:text-lg">
+      {/* 3D Canvas */}
+      <div ref={mountRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-60" />
 
-      {/* Responsive Top Navbar */}
-      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#0A0B0E]/90 border-b border-cyan-900/40 px-4 md:px-8 py-4 md:py-5 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2 shadow-xl">
+      {/* Top Navigation */}
+      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#FEFAE0]/90 border-b border-[#E9EDC9] px-4 md:px-8 py-4 md:py-5 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2 shadow-sm">
         <a 
           href="#about" 
           onClick={playClickSound}
-          className="text-2xl md:text-3xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500 hover:scale-105 transition"
+          className="text-2xl md:text-3xl font-black tracking-wider text-[#D4A373] hover:scale-105 transition"
         >
           ANJALI YADAV
         </a>
 
-        {/* Desktop Links & Resume Button */}
-        <div className="hidden md:flex items-center gap-8 text-lg font-bold text-slate-300">
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-8 text-lg font-bold text-[#5B5042]">
           {[
             { id: 'about', label: 'About' },
             { id: 'experience', label: 'Experience' },
@@ -317,37 +317,37 @@ const Portfolio = () => {
               onClick={playClickSound} 
               className={`transition pb-1 ${
                 activeSection === item.id 
-                  ? 'text-cyan-400 border-b-2 border-cyan-400 font-extrabold scale-110' 
-                  : 'hover:text-cyan-300'
+                  ? 'text-[#D4A373] border-b-2 border-[#D4A373] font-extrabold scale-105' 
+                  : 'hover:text-[#D4A373]'
               }`}
             >
               {item.label}
             </a>
           ))}
 
-          {/* Desktop Resume Button */}
+          {/* Resume Button */}
           <a 
             href="./resume.pdf" 
             target="_blank" 
             rel="noreferrer"
             onClick={playClickSound}
-            className="px-5 py-2.5 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-sm rounded-xl hover:scale-105 transition shadow-lg shadow-cyan-500/20 flex items-center gap-2"
+            className="px-5 py-2.5 bg-[#D4A373] text-white font-black text-sm rounded-xl hover:bg-[#c29263] transition shadow-md flex items-center gap-2"
           >
             <FaFileDownload /> Resume
           </a>
         </div>
 
-        {/* Mobile Hamburger Menu Button */}
+        {/* Mobile Hamburger Button */}
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-          className="md:hidden text-cyan-400 text-2xl p-2 focus:outline-none"
+          className="md:hidden text-[#D4A373] text-2xl p-2 focus:outline-none"
         >
           {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
         </button>
 
-        {/* Mobile Dropdown Drawer */}
+        {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-[#0D0E14] border-b border-cyan-500/30 p-6 flex flex-col gap-4 text-center md:hidden shadow-2xl">
+          <div className="absolute top-full left-0 w-full bg-[#FAEDCD] border-b border-[#E9EDC9] p-6 flex flex-col gap-4 text-center md:hidden shadow-xl">
             {[
               { id: 'about', label: 'About' },
               { id: 'experience', label: 'Experience' },
@@ -361,20 +361,19 @@ const Portfolio = () => {
                 href={`#${item.id}`} 
                 onClick={() => { playClickSound(); setIsMobileMenuOpen(false); }} 
                 className={`text-lg font-bold py-2 ${
-                  activeSection === item.id ? 'text-cyan-400 border-b border-cyan-400' : 'text-slate-300'
+                  activeSection === item.id ? 'text-[#D4A373] border-b border-[#D4A373]' : 'text-[#5B5042]'
                 }`}
               >
                 {item.label}
               </a>
             ))}
 
-            {/* Mobile Resume Button */}
             <a 
               href="./resume.pdf" 
               target="_blank" 
               rel="noreferrer"
               onClick={() => { playClickSound(); setIsMobileMenuOpen(false); }}
-              className="mt-2 py-3 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-base rounded-xl shadow-lg flex items-center justify-center gap-2"
+              className="mt-2 py-3 bg-[#D4A373] text-white font-black text-base rounded-xl shadow-md flex items-center justify-center gap-2"
             >
               <FaFileDownload /> Download Resume
             </a>
@@ -385,49 +384,48 @@ const Portfolio = () => {
       {/* Hero Section */}
       <section id="about" className="relative z-10 pt-28 md:pt-40 pb-16 md:pb-28 px-4 md:px-8 max-w-7xl mx-auto min-h-screen flex flex-col justify-center">
         <div className="text-center mb-6 md:mb-10">
-          <p className="text-2xl md:text-3xl font-serif italic text-cyan-300 tracking-wide">Hey, there</p>
+          <p className="text-2xl md:text-3xl font-serif italic text-[#D4A373] tracking-wide">Hey, there</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-10 items-center">
           <div className="lg:col-span-3 text-center lg:text-left space-y-3">
-            <span className="text-xs md:text-sm font-mono text-cyan-400 tracking-widest uppercase block font-bold">● Available for selected roles</span>
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-tight">
-              I AM<br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500">ANJALI</span>
+            <span className="text-xs md:text-sm font-mono text-[#8B9862] tracking-widest uppercase block font-bold">● Available for selected roles</span>
+            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#2D261E] leading-tight">
+              I AM<br /><span className="text-[#D4A373]">ANJALI</span>
             </h1>
           </div>
 
-          {/* Centered Portrait */}
+          {/* Profile Image Frame */}
           <div className="lg:col-span-6 flex justify-center my-4 lg:my-0">
-            <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border-2 border-cyan-500/40 shadow-2xl shadow-cyan-500/30 hover:scale-105 transition duration-500">
+            <div className="relative group w-72 sm:w-80 md:w-[26rem] h-[22rem] sm:h-[26rem] md:h-[30rem] rounded-3xl overflow-hidden border-4 border-[#CCD5AE] shadow-xl hover:scale-105 transition duration-500">
               <img 
                 src="./photo.png" 
                 onError={(e) => { e.target.src = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"; }}
                 alt="Anjali Yadav Profile" 
-                className="w-full h-full object-cover object-top filter brightness-95 contrast-105"
+                className="w-full h-full object-cover object-top filter brightness-100 contrast-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0E] via-transparent to-transparent opacity-60" />
             </div>
           </div>
 
           <div className="lg:col-span-3 text-center lg:text-right space-y-3 md:space-y-4">
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white leading-tight">
-              DATA<br /><span className="text-cyan-400">ANALYST</span>
+            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-[#2D261E] leading-tight">
+              DATA<br /><span className="text-[#D4A373]">ANALYST</span>
             </h2>
-            <p className="text-slate-300 text-sm md:text-base leading-relaxed font-medium">
+            <p className="text-[#5B5042] text-sm md:text-base leading-relaxed font-medium">
               Specialized in Python, SQL (BigQuery), Power BI, and Predictive Analytics. Experienced in building automated data workflows and executive dashboards.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Professional Experience Section */}
-      <section id="experience" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-slate-800/60">
-        <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500 mb-8">
+      {/* Experience Section */}
+      <section id="experience" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
+        <h2 className="text-3xl sm:text-5xl font-black text-[#D4A373] mb-8">
           Professional Experience
         </h2>
 
-        {/* 3D Map Workflow */}
-        <div className="mb-8 md:mb-12 bg-slate-900/60 border border-slate-800 rounded-3xl p-4 md:p-8 backdrop-blur-xl">
+        {/* Workflow Nodes */}
+        <div className="mb-8 md:mb-12 bg-[#FAEDCD]/80 border border-[#E9EDC9] rounded-3xl p-4 md:p-8 backdrop-blur-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 relative">
             {mapNodes.map((node, nIdx) => (
               <div 
@@ -435,40 +433,40 @@ const Portfolio = () => {
                 onClick={() => { playClickSound(); setActiveMapNode(nIdx); }}
                 className={`p-5 md:p-6 rounded-2xl border transition-all duration-300 cursor-pointer relative overflow-hidden group ${
                   activeMapNode === nIdx 
-                    ? 'bg-cyan-950/80 border-cyan-400 shadow-xl shadow-cyan-500/20 scale-102 md:scale-105' 
-                    : 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                    ? 'bg-[#CCD5AE] border-[#D4A373] shadow-md scale-102 md:scale-105' 
+                    : 'bg-[#FEFAE0] border-[#E9EDC9] hover:border-[#D4A373]'
                 }`}
               >
                 <div className="flex items-center justify-between mb-3">
-                  <div className={`p-2.5 rounded-xl text-xl md:text-2xl ${activeMapNode === nIdx ? 'bg-cyan-500 text-black' : 'bg-slate-900 text-cyan-400'}`}>
+                  <div className={`p-2.5 rounded-xl text-xl md:text-2xl ${activeMapNode === nIdx ? 'bg-[#D4A373] text-white' : 'bg-[#E9EDC9] text-[#2D261E]'}`}>
                     {node.icon}
                   </div>
-                  <span className="text-xs font-mono font-bold text-slate-500">0{node.id}</span>
+                  <span className="text-xs font-mono font-bold text-[#8B9862]">0{node.id}</span>
                 </div>
-                <h4 className="text-sm md:text-base font-bold text-white mb-1.5">{node.name}</h4>
-                <p className="text-slate-400 text-xs leading-relaxed">{node.desc}</p>
+                <h4 className="text-sm md:text-base font-bold text-[#2D261E] mb-1.5">{node.name}</h4>
+                <p className="text-[#5B5042] text-xs leading-relaxed">{node.desc}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Career Experience Module */}
-        <div className="bg-gradient-to-br from-slate-900/90 via-[#0D0E14] to-slate-900/90 border border-slate-800 hover:border-cyan-400 rounded-3xl p-6 md:p-12 transition-all duration-500 hover:scale-[1.01] md:hover:scale-[1.03] shadow-2xl hover:shadow-cyan-500/30 group">
+        {/* Experience Details */}
+        <div className="bg-[#FAEDCD]/90 border border-[#E9EDC9] hover:border-[#D4A373] rounded-3xl p-6 md:p-12 transition-all duration-500 shadow-lg group">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 gap-4">
             <div>
-              <span className="px-4 py-1.5 bg-cyan-950/90 text-cyan-300 border border-cyan-700/60 rounded-full text-xs md:text-sm font-mono inline-block mb-3 font-bold">
+              <span className="px-4 py-1.5 bg-[#CCD5AE] text-[#2D261E] border border-[#B3BE91] rounded-full text-xs md:text-sm font-mono inline-block mb-3 font-bold">
                 JUL 2025 – MAR 2026
               </span>
-              <h3 className="text-2xl sm:text-4xl font-black text-white group-hover:text-cyan-400 transition">Senior Production Associate</h3>
-              <p className="text-cyan-300 text-lg md:text-xl font-bold mt-1">IQVIA • Bangalore, India</p>
+              <h3 className="text-2xl sm:text-4xl font-black text-[#2D261E] group-hover:text-[#D4A373] transition">Senior Production Associate</h3>
+              <p className="text-[#D4A373] text-lg md:text-xl font-bold mt-1">IQVIA • Bangalore, India</p>
             </div>
-            <div className="p-4 md:p-5 bg-cyan-500/20 border border-cyan-500/40 rounded-2xl text-cyan-300 hidden sm:block">
+            <div className="p-4 md:p-5 bg-[#E9EDC9] border border-[#CCD5AE] rounded-2xl text-[#2D261E] hidden sm:block">
               <FaBriefcase className="text-3xl md:text-4xl" />
             </div>
           </div>
 
-          <div className="space-y-4 text-slate-200 text-base md:text-lg leading-relaxed font-normal">
-            <p className="font-semibold text-cyan-200 text-lg md:text-xl mb-3">
+          <div className="space-y-4 text-[#3D3228] text-base md:text-lg leading-relaxed font-normal">
+            <p className="font-semibold text-[#2D261E] text-lg md:text-xl mb-3">
               Operational Data Analysis, MIS Automation & Analytics Execution:
             </p>
             <ul className="space-y-3 md:space-y-4 list-disc list-inside text-sm md:text-lg">
@@ -482,37 +480,37 @@ const Portfolio = () => {
       </section>
 
       {/* Technical Skills Section */}
-      <section id="skills" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-slate-800/60">
-        <h2 className="text-3xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500 mb-8 md:mb-12">
+      <section id="skills" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
+        <h2 className="text-3xl sm:text-5xl font-black text-[#D4A373] mb-8 md:mb-12">
           Technical Skills & Competencies
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {[
-            { cat: "Python & Analytics", icon: <FaCode className="text-cyan-400 text-2xl md:text-3xl" />, skills: [{ name: "Python (Pandas, NumPy)", level: 95 }, { name: "Exploratory Data Analysis (EDA)", level: 90 }, { name: "Trend & Anomaly Detection", level: 88 }, { name: "Scikit-Learn (Predictive ML)", level: 82 }] },
-            { cat: "SQL & Databases", icon: <FaDatabase className="text-purple-400 text-2xl md:text-3xl" />, skills: [{ name: "SQL (MySQL, BigQuery)", level: 95 }, { name: "CTEs & Window Functions", level: 92 }, { name: "Subqueries & Aggregations", level: 90 }, { name: "Data Profiling & Auditing", level: 88 }] },
-            { cat: "Business Intelligence", icon: <FaChartLine className="text-teal-400 text-2xl md:text-3xl" />, skills: [{ name: "Power BI & DAX Modeling", level: 92 }, { name: "Tableau & Looker Studio", level: 85 }, { name: "KPI Dashboards", level: 90 }, { name: "SAP SAC & Metabase", level: 80 }] },
-            { cat: "Excel & Automation", icon: <FaCheckCircle className="text-emerald-400 text-2xl md:text-3xl" />, skills: [{ name: "Advanced Excel (Pivot, XLOOKUP)", level: 98 }, { name: "VBA / Macro Automation", level: 90 }, { name: "Power Query ETL", level: 92 }, { name: "MIS & Operational Reporting", level: 95 }] },
-            { cat: "Data Quality & Analysis", icon: <FaCheckCircle className="text-cyan-400 text-2xl md:text-3xl" />, skills: [{ name: "Data Validation & Reconciliation", level: 95 }, { name: "Root Cause Analysis", level: 90 }, { name: "KPI Definition & Tracking", level: 88 }, { name: "What-If Analysis", level: 85 }] },
-            { cat: "Tools & Ecosystems", icon: <FaCode className="text-purple-400 text-2xl md:text-3xl" />, skills: [{ name: "Git & GitHub Workflow", level: 90 }, { name: "Docker & Local LLM Workflows", level: 82 }, { name: "Apache Spark / Hadoop", level: 75 }, { name: "Process Digitalization", level: 88 }] }
+            { cat: "Python & Analytics", icon: <FaCode className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Python (Pandas, NumPy)", level: 95 }, { name: "Exploratory Data Analysis (EDA)", level: 90 }, { name: "Trend & Anomaly Detection", level: 88 }, { name: "Scikit-Learn (Predictive ML)", level: 82 }] },
+            { cat: "SQL & Databases", icon: <FaDatabase className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "SQL (MySQL, BigQuery)", level: 95 }, { name: "CTEs & Window Functions", level: 92 }, { name: "Subqueries & Aggregations", level: 90 }, { name: "Data Profiling & Auditing", level: 88 }] },
+            { cat: "Business Intelligence", icon: <FaChartLine className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Power BI & DAX Modeling", level: 92 }, { name: "Tableau & Looker Studio", level: 85 }, { name: "KPI Dashboards", level: 90 }, { name: "SAP SAC & Metabase", level: 80 }] },
+            { cat: "Excel & Automation", icon: <FaCheckCircle className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "Advanced Excel (Pivot, XLOOKUP)", level: 98 }, { name: "VBA / Macro Automation", level: 90 }, { name: "Power Query ETL", level: 92 }, { name: "MIS & Operational Reporting", level: 95 }] },
+            { cat: "Data Quality & Analysis", icon: <FaCheckCircle className="text-[#D4A373] text-2xl md:text-3xl" />, skills: [{ name: "Data Validation & Reconciliation", level: 95 }, { name: "Root Cause Analysis", level: 90 }, { name: "KPI Definition & Tracking", level: 88 }, { name: "What-If Analysis", level: 85 }] },
+            { cat: "Tools & Ecosystems", icon: <FaCode className="text-[#8B9862] text-2xl md:text-3xl" />, skills: [{ name: "Git & GitHub Workflow", level: 90 }, { name: "Docker & Local LLM Workflows", level: 82 }, { name: "Apache Spark / Hadoop", level: 75 }, { name: "Process Digitalization", level: 88 }] }
           ].map((group, idx) => (
             <div 
               key={idx} 
-              className="bg-slate-900/70 border border-slate-800 rounded-3xl p-6 md:p-8 hover:scale-102 md:hover:scale-105 hover:border-cyan-400 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+              className="bg-[#FAEDCD]/70 border border-[#E9EDC9] rounded-3xl p-6 md:p-8 hover:scale-102 hover:border-[#D4A373] shadow-md transition-all duration-300 cursor-pointer"
             >
-              <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 pb-3 border-b border-slate-800">
+              <div className="flex items-center gap-3 md:gap-4 mb-4 md:mb-6 pb-3 border-b border-[#E9EDC9]">
                 {group.icon}
-                <h3 className="text-xl md:text-2xl font-bold text-white">{group.cat}</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-[#2D261E]">{group.cat}</h3>
               </div>
               <div className="space-y-3 md:space-y-4">
                 {group.skills.map((s, sIdx) => (
                   <div key={sIdx}>
                     <div className="flex justify-between text-xs md:text-base font-mono mb-1">
-                      <span className="text-slate-200 font-bold">{s.name}</span>
-                      <span className="text-cyan-400 font-extrabold">{s.level}%</span>
+                      <span className="text-[#3D3228] font-bold">{s.name}</span>
+                      <span className="text-[#D4A373] font-extrabold">{s.level}%</span>
                     </div>
-                    <div className="w-full bg-slate-800 rounded-full h-2 md:h-2.5 overflow-hidden">
-                      <div className="bg-gradient-to-r from-cyan-400 to-purple-500 h-2 md:h-2.5 rounded-full" style={{ width: `${s.level}%` }} />
+                    <div className="w-full bg-[#E9EDC9] rounded-full h-2 md:h-2.5 overflow-hidden">
+                      <div className="bg-[#D4A373] h-2 md:h-2.5 rounded-full" style={{ width: `${s.level}%` }} />
                     </div>
                   </div>
                 ))}
@@ -522,10 +520,10 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Featured Analytics Portfolio Projects */}
-      <section id="projects" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-slate-800/60">
+      {/* Projects Section */}
+      <section id="projects" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
         <div className="text-center mb-10 md:mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black text-white">Some of My Recent Work</h2>
+          <h2 className="text-3xl sm:text-5xl font-black text-[#2D261E]">Some of My Recent Work</h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
@@ -540,23 +538,22 @@ const Portfolio = () => {
             <div 
               key={idx} 
               onClick={() => triggerModal({ title: proj.title, subtitle: proj.tags.join(" • "), content: proj.desc, link: proj.link, img: proj.img })}
-              className="bg-slate-900/80 border border-slate-800 rounded-3xl overflow-hidden hover:border-cyan-400 hover:scale-102 md:hover:scale-105 transition-all duration-300 cursor-pointer group flex flex-col justify-between shadow-xl hover:shadow-cyan-500/20"
+              className="bg-[#FAEDCD]/80 border border-[#E9EDC9] rounded-3xl overflow-hidden hover:border-[#D4A373] hover:scale-102 transition-all duration-300 cursor-pointer group flex flex-col justify-between shadow-md"
             >
               <div>
-                <div className="relative h-40 md:h-48 overflow-hidden bg-slate-950">
-                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500 filter brightness-90" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0B0E] via-transparent to-transparent opacity-80" />
-                  <span className="absolute top-3 left-3 text-2xl md:text-3xl font-mono font-black text-cyan-400 drop-shadow-md">{proj.num}</span>
+                <div className="relative h-40 md:h-48 overflow-hidden bg-[#E9EDC9]">
+                  <img src={proj.img} alt={proj.title} className="w-full h-full object-cover group-hover:scale-110 transition duration-500 filter brightness-95" />
+                  <span className="absolute top-3 left-3 text-2xl md:text-3xl font-mono font-black text-[#D4A373] drop-shadow">{proj.num}</span>
                 </div>
 
                 <div className="p-5 md:p-6">
                   <div className="flex flex-wrap gap-1.5 md:gap-2 mb-3 md:mb-4">
                     {proj.tags.map((t, tIdx) => (
-                      <span key={tIdx} className="px-2 py-0.5 md:px-2.5 md:py-1 bg-cyan-950/90 text-cyan-300 text-[10px] md:text-xs font-mono rounded border border-cyan-800/60 font-bold">{t}</span>
+                      <span key={tIdx} className="px-2.5 py-1 bg-[#CCD5AE] text-[#2D261E] text-[10px] md:text-xs font-mono rounded font-bold">{t}</span>
                     ))}
                   </div>
-                  <h3 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-cyan-400 transition">{proj.title}</h3>
-                  <p className="text-slate-300 text-xs md:text-base leading-relaxed mb-4 md:mb-6">{proj.desc}</p>
+                  <h3 className="text-xl md:text-2xl font-bold text-[#2D261E] mb-2 group-hover:text-[#D4A373] transition">{proj.title}</h3>
+                  <p className="text-[#5B5042] text-xs md:text-base leading-relaxed mb-4 md:mb-6">{proj.desc}</p>
                 </div>
               </div>
 
@@ -566,7 +563,7 @@ const Portfolio = () => {
                   target="_blank" 
                   rel="noreferrer" 
                   onClick={(e) => e.stopPropagation()} 
-                  className="inline-flex items-center gap-2 text-cyan-400 text-xs md:text-base font-bold hover:underline"
+                  className="inline-flex items-center gap-2 text-[#D4A373] text-xs md:text-base font-bold hover:underline"
                 >
                   View project <FaGithub className="text-sm md:text-lg" />
                 </a>
@@ -577,47 +574,47 @@ const Portfolio = () => {
       </section>
 
       {/* Education & Achievements */}
-      <section id="education" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-slate-800/60">
+      <section id="education" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           <div>
-            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300 flex items-center gap-3">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-[#D4A373] flex items-center gap-3">
               <FaGraduationCap /> Education
             </h2>
             <div className="space-y-4 md:space-y-6">
-              <div className="bg-slate-900/70 border border-slate-800 p-6 md:p-8 rounded-3xl hover:scale-102 md:hover:scale-105 hover:border-cyan-400 transition duration-300 cursor-pointer shadow-xl">
-                <h3 className="font-bold text-white text-xl md:text-2xl">Master of Computer Applications (MCA)</h3>
-                <p className="text-cyan-400 text-base md:text-lg font-semibold mt-1">IIT Patna | 2025 – 2027</p>
-                <p className="text-slate-200 text-xs md:text-base mt-2 font-mono font-bold">CGPA: 8.4 / 10</p>
+              <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
+                <h3 className="font-bold text-[#2D261E] text-xl md:text-2xl">Master of Computer Applications (MCA)</h3>
+                <p className="text-[#D4A373] text-base md:text-lg font-semibold mt-1">IIT Patna | 2025 – 2027</p>
+                <p className="text-[#5B5042] text-xs md:text-base mt-2 font-mono font-bold">CGPA: 8.4 / 10</p>
               </div>
-              <div className="bg-slate-900/70 border border-slate-800 p-6 md:p-8 rounded-3xl hover:scale-102 md:hover:scale-105 hover:border-cyan-400 transition duration-300 cursor-pointer shadow-xl">
-                <h3 className="font-bold text-white text-xl md:text-2xl">Bachelor of Computer Applications (BCA)</h3>
-                <p className="text-cyan-400 text-base md:text-lg font-semibold mt-1">Kristu Jayanti College, Bangalore | 2022 – 2025</p>
-                <p className="text-slate-200 text-xs md:text-base mt-2 font-mono font-bold">CGPA: 7.9 / 10</p>
+              <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
+                <h3 className="font-bold text-[#2D261E] text-xl md:text-2xl">Bachelor of Computer Applications (BCA)</h3>
+                <p className="text-[#D4A373] text-base md:text-lg font-semibold mt-1">Kristu Jayanti College, Bangalore | 2022 – 2025</p>
+                <p className="text-[#5B5042] text-xs md:text-base mt-2 font-mono font-bold">CGPA: 7.9 / 10</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-300 flex items-center gap-3">
+            <h2 className="text-3xl md:text-4xl font-black mb-6 md:mb-8 text-[#D4A373] flex items-center gap-3">
               <FaAward /> Certifications & Badges
             </h2>
-            <div className="bg-slate-900/70 border border-slate-800 p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:scale-102 md:hover:scale-105 hover:border-cyan-400 transition duration-300 cursor-pointer shadow-xl">
-              <div className="flex items-center gap-4 pb-4 border-b border-slate-800">
-                <span className="text-amber-400 font-black text-3xl md:text-4xl">5★</span>
+            <div className="bg-[#FAEDCD]/70 border border-[#E9EDC9] p-6 md:p-8 rounded-3xl space-y-4 md:space-y-6 hover:scale-102 hover:border-[#D4A373] transition duration-300 shadow-md">
+              <div className="flex items-center gap-4 pb-4 border-b border-[#E9EDC9]">
+                <span className="text-[#D4A373] font-black text-3xl md:text-4xl">5★</span>
                 <div>
-                  <h4 className="text-white font-bold text-base md:text-lg">HackerRank Gold Badge in SQL & Python</h4>
+                  <h4 className="text-[#2D261E] font-bold text-base md:text-lg">HackerRank Gold Badge in SQL & Python</h4>
                   <a 
                     href="https://www.hackerrank.com/profile/anjaliyadavpers1" 
                     target="_blank" 
                     rel="noreferrer" 
                     onClick={playClickSound}
-                    className="inline-flex items-center gap-1.5 text-xs md:text-base text-cyan-400 font-bold hover:underline mt-1"
+                    className="inline-flex items-center gap-1.5 text-xs md:text-base text-[#D4A373] font-bold hover:underline mt-1"
                   >
                     HackerRank Profile <FaExternalLinkAlt className="text-xs" />
                   </a>
                 </div>
               </div>
-              <ul className="space-y-2.5 md:space-y-3 text-xs md:text-base text-slate-200 font-medium">
+              <ul className="space-y-2.5 md:space-y-3 text-xs md:text-base text-[#3D3228] font-medium">
                 <li>• SQL Advanced — HackerRank</li>
                 <li>• Introduction to Data Analysis Using Python — Google</li>
                 <li>• Data Analytics Essentials — Cisco</li>
@@ -629,34 +626,34 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Get In Touch Contact Section */}
-      <section id="contact" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-slate-800/60">
+      {/* Contact Section */}
+      <section id="contact" className="relative z-10 py-16 md:py-28 px-4 md:px-8 max-w-7xl mx-auto border-t border-[#E9EDC9]">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 items-start">
           <div className="lg:col-span-5 space-y-4 md:space-y-6">
-            <h2 className="text-4xl sm:text-6xl font-black text-white tracking-tight">Get in touch</h2>
+            <h2 className="text-4xl sm:text-6xl font-black text-[#2D261E] tracking-tight">Get in touch</h2>
             
             <div className="space-y-4 md:space-y-6 pt-2 md:pt-4">
               <div>
-                <p className="text-xs md:text-sm font-mono text-slate-400 uppercase font-bold">Email</p>
-                <a href="mailto:anjaliyadavpersonal2001@gmail.com" className="text-base sm:text-xl font-bold text-cyan-400 hover:underline break-all">
+                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase font-bold">Email</p>
+                <a href="mailto:anjaliyadavpersonal2001@gmail.com" className="text-base sm:text-xl font-bold text-[#D4A373] hover:underline break-all">
                   anjaliyadavpersonal2001@gmail.com
                 </a>
               </div>
 
               <div>
-                <p className="text-xs md:text-sm font-mono text-slate-400 uppercase font-bold">Phone</p>
-                <a href="tel:+919845483651" className="text-base sm:text-xl font-bold text-cyan-400 hover:underline">
+                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase font-bold">Phone</p>
+                <a href="tel:+919845483651" className="text-base sm:text-xl font-bold text-[#D4A373] hover:underline">
                   +91-9845483651
                 </a>
               </div>
 
               <div>
-                <p className="text-xs md:text-sm font-mono text-slate-400 uppercase mb-3 font-bold">FOLLOW ON</p>
+                <p className="text-xs md:text-sm font-mono text-[#8B9862] uppercase mb-3 font-bold">FOLLOW ON</p>
                 <div className="flex gap-4">
-                  <a href="https://linkedin.com/in/anjali-yadav-dev" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-slate-900 border border-slate-800 rounded-full text-cyan-400 hover:scale-110 transition">
+                  <a href="https://linkedin.com/in/anjali-yadav-dev" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-[#CCD5AE] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white transition shadow">
                     <FaLinkedin className="text-xl md:text-2xl" />
                   </a>
-                  <a href="https://github.com/AnjaliAnalytics" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-slate-900 border border-slate-800 rounded-full text-cyan-400 hover:scale-110 transition">
+                  <a href="https://github.com/AnjaliAnalytics" target="_blank" rel="noreferrer" className="p-3.5 md:p-4 bg-[#CCD5AE] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white transition shadow">
                     <FaGithub className="text-xl md:text-2xl" />
                   </a>
                 </div>
@@ -664,12 +661,12 @@ const Portfolio = () => {
             </div>
           </div>
 
-          {/* Message Card */}
-          <div className="lg:col-span-7 bg-gradient-to-br from-slate-900 via-[#0D0E14] to-slate-900 border border-cyan-500/40 rounded-3xl p-6 md:p-10 shadow-2xl">
+          {/* Form */}
+          <div className="lg:col-span-7 bg-[#FAEDCD] border border-[#E9EDC9] rounded-3xl p-6 md:p-10 shadow-lg">
             <form onSubmit={handleFormSubmit} className="space-y-4 md:space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <label className="text-xs font-mono text-slate-300 block mb-1.5 font-bold">Your Name (Max 50 chars)</label>
+                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Your Name (Max 50 chars)</label>
                   <input 
                     type="text" 
                     required
@@ -677,11 +674,11 @@ const Portfolio = () => {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full bg-[#050507] border border-slate-800 rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-white focus:outline-none focus:border-cyan-400"
+                    className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-slate-300 block mb-1.5 font-bold">Email address</label>
+                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Email address</label>
                   <input 
                     type="email" 
                     required
@@ -691,15 +688,15 @@ const Portfolio = () => {
                       if (formErrors.email) setFormErrors({ ...formErrors, email: '' });
                     }}
                     placeholder="john@example.com"
-                    className={`w-full bg-[#050507] border ${formErrors.email ? 'border-red-500' : 'border-slate-800'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-white focus:outline-none focus:border-cyan-400`}
+                    className={`w-full bg-[#FEFAE0] border ${formErrors.email ? 'border-red-500' : 'border-[#E9EDC9]'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]`}
                   />
-                  {formErrors.email && <p className="text-red-400 text-xs font-mono mt-1">{formErrors.email}</p>}
+                  {formErrors.email && <p className="text-red-500 text-xs font-mono mt-1">{formErrors.email}</p>}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                 <div>
-                  <label className="text-xs font-mono text-slate-300 block mb-1.5 font-bold">Phone (10 Digits)</label>
+                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Phone (10 Digits)</label>
                   <input 
                     type="tel" 
                     required
@@ -709,45 +706,45 @@ const Portfolio = () => {
                       if (formErrors.phone) setFormErrors({ ...formErrors, phone: '' });
                     }}
                     placeholder="+91 0000000000"
-                    className={`w-full bg-[#050507] border ${formErrors.phone ? 'border-red-500' : 'border-slate-800'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-white focus:outline-none focus:border-cyan-400`}
+                    className={`w-full bg-[#FEFAE0] border ${formErrors.phone ? 'border-red-500' : 'border-[#E9EDC9]'} rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]`}
                   />
-                  {formErrors.phone && <p className="text-red-400 text-xs font-mono mt-1">{formErrors.phone}</p>}
+                  {formErrors.phone && <p className="text-red-500 text-xs font-mono mt-1">{formErrors.phone}</p>}
                 </div>
                 <div>
-                  <label className="text-xs font-mono text-slate-300 block mb-1.5 font-bold">Subject</label>
+                  <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Subject</label>
                   <input 
                     type="text" 
                     required
                     value={formData.subject}
                     onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                     placeholder="Data Analytics Opportunity"
-                    className="w-full bg-[#050507] border border-slate-800 rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-white focus:outline-none focus:border-cyan-400"
+                    className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="text-xs font-mono text-slate-300 block mb-1.5 font-bold">Message</label>
+                <label className="text-xs font-mono text-[#5B5042] block mb-1.5 font-bold">Message</label>
                 <textarea 
                   rows="4"
                   required
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Hello Anjali, I reviewed your analytics portfolio..."
-                  className="w-full bg-[#050507] border border-slate-800 rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-4 py-3 md:py-3.5 text-sm md:text-base text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
                 />
               </div>
 
               <button 
                 type="submit" 
                 disabled={isSubmitting}
-                className="w-full py-3.5 md:py-4 bg-gradient-to-r from-cyan-400 to-purple-500 text-black font-black text-base md:text-lg rounded-xl hover:scale-102 md:hover:scale-105 transition duration-300 shadow-xl flex items-center justify-center gap-3 disabled:opacity-50"
+                className="w-full py-3.5 md:py-4 bg-[#D4A373] text-white font-black text-base md:text-lg rounded-xl hover:bg-[#c29263] transition duration-300 shadow-md flex items-center justify-center gap-3 disabled:opacity-50"
               >
                 {isSubmitting ? 'Sending Message...' : 'Send Message'} <FaSend />
               </button>
 
               {formSubmitted && (
-                <p className="text-cyan-400 text-sm md:text-base font-mono text-center animate-bounce font-bold">
+                <p className="text-[#8B9862] text-sm md:text-base font-mono text-center animate-bounce font-bold">
                   Thank you! Your message has been sent.
                 </p>
               )}
@@ -756,31 +753,31 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Pop-Up Detail Modal */}
+      {/* Pop-Up Modal */}
       {activeModal && (
         <div 
           onClick={() => { playClickSound(); setActiveModal(null); }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/85 backdrop-blur-md"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-6 bg-black/60 backdrop-blur-sm"
         >
           <div 
             onClick={(e) => e.stopPropagation()} 
-            className="bg-[#0D0E14] border border-cyan-500/40 rounded-3xl p-6 md:p-10 max-w-2xl w-full shadow-2xl shadow-cyan-500/30 relative animate-in fade-in zoom-in duration-200 max-h-[90vh] overflow-y-auto"
+            className="bg-[#FEFAE0] border border-[#E9EDC9] rounded-3xl p-6 md:p-10 max-w-2xl w-full shadow-2xl relative animate-in fade-in duration-200 max-h-[90vh] overflow-y-auto"
           >
             <button 
               onClick={() => { playClickSound(); setActiveModal(null); }}
-              className="absolute top-4 right-4 md:top-6 md:right-6 text-slate-400 hover:text-white text-2xl md:text-3xl transition"
+              className="absolute top-4 right-4 md:top-6 md:right-6 text-[#5B5042] hover:text-[#2D261E] text-2xl md:text-3xl transition"
             >
               <FaTimesCircle />
             </button>
 
             {activeModal.img && (
-              <img src={activeModal.img} alt={activeModal.title} className="w-full h-36 md:h-44 object-cover rounded-2xl mb-4 md:mb-6 border border-slate-800" />
+              <img src={activeModal.img} alt={activeModal.title} className="w-full h-36 md:h-44 object-cover rounded-2xl mb-4 md:mb-6 border border-[#E9EDC9]" />
             )}
 
-            <span className="text-xs font-mono text-cyan-400 uppercase font-bold">// DETAILS VIEW</span>
-            <h3 className="text-2xl md:text-3xl font-black text-white mt-1 mb-2">{activeModal.title}</h3>
-            <p className="text-xs md:text-sm font-mono text-purple-400 mb-4 md:mb-6 font-bold">{activeModal.subtitle}</p>
-            <p className="text-slate-200 text-sm md:text-lg leading-relaxed mb-6 md:mb-8">{activeModal.content}</p>
+            <span className="text-xs font-mono text-[#D4A373] uppercase font-bold">// DETAILS VIEW</span>
+            <h3 className="text-2xl md:text-3xl font-black text-[#2D261E] mt-1 mb-2">{activeModal.title}</h3>
+            <p className="text-xs md:text-sm font-mono text-[#8B9862] mb-4 md:mb-6 font-bold">{activeModal.subtitle}</p>
+            <p className="text-[#3D3228] text-sm md:text-lg leading-relaxed mb-6 md:mb-8">{activeModal.content}</p>
             
             {activeModal.link && (
               <a 
@@ -788,7 +785,7 @@ const Portfolio = () => {
                 target="_blank"
                 rel="noreferrer"
                 onClick={playClickSound}
-                className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 bg-cyan-500 text-black font-black text-xs md:text-base rounded-xl hover:bg-cyan-400 transition"
+                className="inline-flex items-center gap-2 px-5 py-3 md:px-6 md:py-3.5 bg-[#D4A373] text-white font-black text-xs md:text-base rounded-xl hover:bg-[#c29263] transition"
               >
                 View project GitHub link <FaGithub className="text-base md:text-xl" />
               </a>
@@ -797,28 +794,28 @@ const Portfolio = () => {
         </div>
       )}
 
-      {/* Responsive Tia AI Widget */}
+      {/* Tia AI Assistant */}
       <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         {!isChatOpen ? (
           <button 
             onClick={handleToggleChat}
-            className="flex items-center gap-3 md:gap-4 px-5 py-3 md:px-7 md:py-4 bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-500 text-black font-black rounded-full shadow-2xl shadow-cyan-500/50 hover:scale-105 transition duration-300 text-sm md:text-lg border-2 border-white/40"
+            className="flex items-center gap-3 md:gap-4 px-5 py-3 md:px-7 md:py-4 bg-[#D4A373] text-white font-black rounded-full shadow-xl hover:scale-105 transition duration-300 text-sm md:text-lg"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-black bg-cyan-900 flex items-center justify-center shadow-inner">
+            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full overflow-hidden border-2 border-white bg-[#CCD5AE] flex items-center justify-center">
               <img 
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" 
                 alt="Tia 3D Avatar" 
-                className="w-full h-full object-cover filter contrast-125"
+                className="w-full h-full object-cover"
               />
             </div>
             Ask Tia AI
           </button>
         ) : (
-          <div className="w-[calc(100vw-2rem)] sm:w-88 md:w-[26rem] bg-[#0D0E14] border border-cyan-500/40 rounded-3xl shadow-2xl shadow-cyan-500/40 overflow-hidden flex flex-col h-[28rem] md:h-[32rem] animate-in slide-in-from-bottom-5 duration-300">
+          <div className="w-[calc(100vw-2rem)] sm:w-88 md:w-[26rem] bg-[#FEFAE0] border border-[#E9EDC9] rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[28rem] md:h-[32rem] animate-in slide-in-from-bottom-5 duration-300">
             {/* Header */}
-            <div className="bg-slate-900 p-4 md:p-5 border-b border-slate-800 flex justify-between items-center">
+            <div className="bg-[#FAEDCD] p-4 md:p-5 border-b border-[#E9EDC9] flex justify-between items-center">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-cyan-400 p-0.5 bg-cyan-950">
+                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border-2 border-[#D4A373] bg-[#CCD5AE]">
                   <img 
                     src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200" 
                     alt="Tia 3D Avatar" 
@@ -826,11 +823,11 @@ const Portfolio = () => {
                   />
                 </div>
                 <div>
-                  <h4 className="font-extrabold text-white text-base md:text-lg">Tia</h4>
-                  <span className="text-[10px] md:text-xs text-cyan-400 font-mono">Portfolio AI Assistant</span>
+                  <h4 className="font-extrabold text-[#2D261E] text-base md:text-lg">Tia</h4>
+                  <span className="text-[10px] md:text-xs text-[#D4A373] font-mono">Portfolio AI Assistant</span>
                 </div>
               </div>
-              <button onClick={handleToggleChat} className="text-slate-400 hover:text-white text-lg md:text-xl">
+              <button onClick={handleToggleChat} className="text-[#5B5042] hover:text-[#2D261E] text-lg md:text-xl">
                 <FaTimes />
               </button>
             </div>
@@ -839,7 +836,7 @@ const Portfolio = () => {
             <div className="flex-1 p-4 md:p-5 overflow-y-auto space-y-3 md:space-y-4 text-xs md:text-base">
               {chatMessages.map((msg, idx) => (
                 <div key={idx} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`p-3 md:p-4 rounded-2xl max-w-[85%] whitespace-pre-line ${msg.sender === 'user' ? 'bg-cyan-500 text-black font-semibold' : 'bg-slate-900 border border-slate-800 text-slate-100'}`}>
+                  <div className={`p-3 md:p-4 rounded-2xl max-w-[85%] whitespace-pre-line ${msg.sender === 'user' ? 'bg-[#D4A373] text-white font-semibold' : 'bg-[#FAEDCD] border border-[#E9EDC9] text-[#2D261E]'}`}>
                     {msg.text}
                   </div>
                 </div>
@@ -848,12 +845,12 @@ const Portfolio = () => {
             </div>
 
             {/* Chips */}
-            <div className="p-2 md:p-3 bg-slate-950 border-t border-slate-800/80 flex gap-2 overflow-x-auto text-[11px] md:text-xs">
+            <div className="p-2 md:p-3 bg-[#FAEDCD]/50 border-t border-[#E9EDC9] flex gap-2 overflow-x-auto text-[11px] md:text-xs">
               {['Experience', 'Education', 'Skills', 'Contact', 'Projects', 'Resume'].map((chip, cIdx) => (
                 <button 
                   key={cIdx} 
                   onClick={() => handleSendMessage(`Tell me about her ${chip}`)}
-                  className="px-3 py-1 md:px-3.5 md:py-1.5 bg-slate-900 border border-slate-800 text-slate-200 rounded-full hover:border-cyan-400 font-bold whitespace-nowrap"
+                  className="px-3 py-1 md:px-3.5 md:py-1.5 bg-[#CCD5AE] border border-[#E9EDC9] text-[#2D261E] rounded-full hover:bg-[#D4A373] hover:text-white font-bold whitespace-nowrap"
                 >
                   {chip}
                 </button>
@@ -861,15 +858,15 @@ const Portfolio = () => {
             </div>
 
             {/* Input Form */}
-            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="p-3 md:p-4 bg-slate-900 border-t border-slate-800 flex gap-2">
+            <form onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }} className="p-3 md:p-4 bg-[#FAEDCD] border-t border-[#E9EDC9] flex gap-2">
               <input 
                 type="text" 
                 value={userInput}
                 onChange={(e) => setUserInput(e.target.value)}
                 placeholder="Ask Tia a question..."
-                className="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm text-white focus:outline-none focus:border-cyan-400"
+                className="flex-1 bg-[#FEFAE0] border border-[#E9EDC9] rounded-xl px-3 py-2 md:px-4 md:py-3 text-xs md:text-sm text-[#2D261E] focus:outline-none focus:border-[#D4A373]"
               />
-              <button type="submit" className="p-3 md:p-3.5 bg-cyan-500 text-black rounded-xl hover:bg-cyan-400 transition">
+              <button type="submit" className="p-3 md:p-3.5 bg-[#D4A373] text-white rounded-xl hover:bg-[#c29263] transition">
                 <FaPaperPlane className="text-xs md:text-sm" />
               </button>
             </form>
@@ -878,7 +875,7 @@ const Portfolio = () => {
       </div>
 
       {/* Footer */}
-      <footer className="relative z-10 py-8 md:py-12 border-t border-slate-800/80 text-center text-xs md:text-base text-cyan-400/90 font-mono tracking-wide px-4">
+      <footer className="relative z-10 py-8 md:py-12 border-t border-[#E9EDC9] text-center text-xs md:text-base text-[#D4A373] font-mono tracking-wide px-4">
         "In God we trust; all others must bring data." — W. Edwards Deming
       </footer>
     </div>
