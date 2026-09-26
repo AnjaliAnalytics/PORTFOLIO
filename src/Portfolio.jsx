@@ -7,7 +7,7 @@ import {
   FaPaperPlane as FaSend, FaBars, FaFileDownload
 } from 'react-icons/fa';
 
-// Web Audio API Synthesizer Click Sound
+// Web Audio API Click Sound
 const playClickSound = () => {
   try {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,7 +38,7 @@ const Portfolio = () => {
   const [userInput, setUserInput] = useState('');
   const chatEndRef = useRef(null);
 
-  // Form State & Validation
+  // Form State
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
   const [formErrors, setFormErrors] = useState({ email: '', phone: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -81,7 +81,7 @@ const Portfolio = () => {
     renderer.setPixelRatio(window.devicePixelRatio);
     mountRef.current.appendChild(renderer.domElement);
 
-    const particlesCount = 500;
+    const particlesCount = 450;
     const posArray = new Float32Array(particlesCount * 3);
     for(let i = 0; i < particlesCount * 3; i++) {
       posArray[i] = (Math.random() - 0.5) * 20;
@@ -90,10 +90,10 @@ const Portfolio = () => {
     const particleGeo = new THREE.BufferGeometry();
     particleGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     const particleMat = new THREE.PointsMaterial({
-      size: 0.035,
+      size: 0.03,
       color: 0x0071E3,
       transparent: true,
-      opacity: 0.25
+      opacity: 0.3
     });
     const particlesMesh = new THREE.Points(particleGeo, particleMat);
     scene.add(particlesMesh);
@@ -274,8 +274,8 @@ const Portfolio = () => {
       {/* 3D Background */}
       <div ref={mountRef} className="fixed top-0 left-0 w-full h-full pointer-events-none z-0 opacity-40" />
 
-      {/* Apple-Style Navigation Bar */}
-      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#F5F5F7]/80 border-b border-[#E5E5EA] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2 shadow-xs">
+      {/* Apple Navbar */}
+      <nav className="fixed top-0 w-full z-40 backdrop-blur-md bg-[#F5F5F7]/80 border-b border-[#E5E5EA] px-4 md:px-8 py-3 md:py-4 flex justify-between items-center max-w-7xl left-1/2 -translate-x-1/2">
         <a 
           href="#about" 
           onClick={playClickSound}
